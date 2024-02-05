@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Projektarbeit Verteilte Systeme</title>
     <link href="style.css" rel="stylesheet">
+    <script src ="script.js"></script>
 </head>
 <body>
 
@@ -12,13 +13,25 @@
 <div class="grid-block">
 
     <div class="topbar">
-        <p>Lorem Iüsum      </p>
+
+    </div>
+
+    <div class="nickNameArea">
+        <label>Name: </label>
+        <textarea id="nicknameArea"></textarea>
+        <button type="button">Speichern</button>
+    </div>
+
+
+    <div class="leftOfChat">
+
     </div>
 
 <div class="chatfenster">
     <textarea readonly id="chatTextArea"></textarea>
 </div>
 
+    <div class="rightOfChat"> </div>
 
 <div class="chatinteraktion">
     <div class="dropdown">
@@ -32,7 +45,7 @@
 
     <textarea id="chatTextEingabe"></textarea>
 
-    <button class="sendButton">Senden</button>
+    <button type="button" class="sendButton" onclick="buttonSendAction()">Senden</button>
 </div>
 </div>
 </body>
