@@ -11,19 +11,19 @@ from fuzzywuzzy import fuzz
 #todo: jede nachricht enthält eine eigene JSON? -> macht es Sinn, dass wir in der Antwort die letzten 2-3 Nachrichten mitgeben?
 #z.B dass wir einen besserern Kontext geben können? -> was wird die struktur der JSON sein
 #remember previous messages sent
+#code besser strukturieren
 
-#temperature=Ein niedriger Wert führt zu konsistenteren Antworten, während ein höherer Wert zu kreativeren und unvorhersehbareren Antworten führt.
-#max_tokens=Die maximale Anzahl von der generierten Antwort?
 
 load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
 openai.api_key = api_key
 
 save_path = r"C:\Users\tyilm\Desktop\verteile-systeme-projektarbeit\ChatGPT\messages"
+messagesPath= r"C:\Users\tyilm\Desktop\verteile-systeme-projektarbeit\ChatGPT\messages\example1.json"
 
 
 def listenToMessages():
-    with open('messages/example2.json', 'r') as openfile:
+    with open(messagesPath, 'r') as openfile:
         json_object = json.load(openfile)
 
 
@@ -65,9 +65,9 @@ def create_chatbot():
 
         messages.append({"role": "user", "content": user_input} )
         messages.append({"role": "system",
-                         "content": "Du bist ein Gesprächspartner in einem Chat-raum. Von einer Skala von -1 bis 1, "
-                                    "wobei -1 für sehr negativ und 1 für sehr positiv steht, bist du mit:  " +
-                                    str(sentiment) + "gerankt"})
+                         "content": "Du bist ein Teilnehmer in einem Chatraum. Deine Aufgabe ist es mit anderen Nutzern eine Konversation zu führen. "
+                                    "Deine aktuelle Stimmung wird auf einer Skala von -1 (sehr negativ)"
+                                    " bis 1 (sehr positiv) bewertet und liegt aktuell bei: "+ str(sentiment)})
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=messages,
@@ -86,7 +86,7 @@ def create_chatbot():
         save_response_as_json(response_message)
 
 def checkSentiment():
-    with open('messages/example2.json', 'r') as openfile:
+    with open(messagesPath, 'r') as openfile:
         json_object = json.load(openfile)
 
     sentiment_value = json_object['sentiment']
