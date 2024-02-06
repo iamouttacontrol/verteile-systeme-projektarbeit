@@ -9,10 +9,19 @@ function buttonSendAction(){
     textFenster.innerHTML = eingabeText;
     eingabeFester.value = "";
 
+    const now = new Date();
+    
+    const aktuelleHour = now.getHours();
+    const aktuelleMinutes = now.getMinutes(); 
+    const aktuelleSeconds = now.getSeconds();
+    
+    let timestamp = `${aktuelleHour}:${aktuelleMinutes}:${aktuelleSeconds}`;
+    
     //JSON String bilden
     const chatnachricht = {
         nickname: savedNickname,
         message: eingabeText,
+        timestamp: timestamp,
         language: chosenlanguage
     }
     textFenster.innerHTML = JSON.stringify(chatnachricht);
@@ -22,6 +31,7 @@ function buttonNicknameSave(){
     const nicknameEingabe = document.getElementById("nicknameArea");
     savedNickname = nicknameEingabe.value;
     nicknameEingabe.readOnly = true;
+    nicknameEingabe.style.backgroundColor = "grey";
 }
 
 function selectLanguageChange(){
