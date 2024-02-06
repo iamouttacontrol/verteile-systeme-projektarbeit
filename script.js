@@ -1,4 +1,4 @@
-let nickname;
+let savedNickname;
 let chosenlanguage = "de";
 
 function buttonSendAction(){
@@ -11,17 +11,20 @@ function buttonSendAction(){
 
     //JSON String bilden
     const chatnachricht = {
-        name: nickname,
+        nickname: savedNickname,
         message: eingabeText,
         language: chosenlanguage
     }
-
     textFenster.innerHTML = JSON.stringify(chatnachricht);
-
 }
 
 function buttonNicknameSave(){
     const nicknameEingabe = document.getElementById("nicknameArea");
-    nickname = nicknameEingabe.value;
+    savedNickname = nicknameEingabe.value;
     nicknameEingabe.readOnly = true;
+}
+
+function selectLanguageChange(){
+    const selectLanguage = document.getElementById("dropdownOptions");
+    chosenlanguage = selectLanguage.value;
 }
