@@ -2,5 +2,6 @@
     "nickname": "tolga1",
     "message": "Hallo dies ist ein Test",
     "time": "13:24:02",
+    "sentiment": -1,
     "language": "de"
 }
