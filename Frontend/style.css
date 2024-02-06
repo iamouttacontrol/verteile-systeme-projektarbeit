@@ -1,0 +1,203 @@
+body{
+    background-color: lightgrey;
+}
+
+h1{
+    text-align: center;
+    background-color: deepskyblue;
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    margin-right: 10em;
+    margin-left: 10em;
+}
+
+.grid-block{
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: 1fr 8fr 1fr;
+    height: 100%;
+    width: 100%;
+    gap:20px;
+}
+
+.nickNameArea{
+    grid-row: 1;
+    grid-column: 2;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 15% 50% 35%;
+}
+
+.nickNameArea button{
+    color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+    grid-row: 1;
+    grid-column: 3;
+    align-self: center;
+}
+
+.nickNameArea button:hover{
+    background-color: lightgrey;
+}
+
+.nickNameArea button:active{
+    background-color: lightgrey;
+    transform: translateY(4px);
+}
+
+.nickNameArea textarea{
+    resize: none;
+    height: 30px;
+    width: 90%;
+    grid-row: 1;
+    grid-column: 2;
+    align-self: center;
+}
+
+.nickNameArea label{
+    color: black;
+    height: 30px;
+    font-size: 20px;
+    grid-row: 1;
+    grid-column: 1;
+    text-decoration: underline;
+    text-align: center;
+    margin-top: 6px;
+    margin-right: 10px;
+    margin-left: 10px;
+    align-self: center
+;
+}
+
+.leftOfChat{
+    grid-row: 2;
+    grid-column: 1;
+}
+
+.chatfenster{
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.rightOfChat{
+    grid-row: 2;
+    grid-column: 3;
+}
+
+#chatTextArea{
+    align-self: center;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border-style: solid;
+    border-color: black;
+    border-width: 3px;
+    border-radius: 20px;
+}
+.chatinteraktion{
+    grid-row: 3;
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: 1fr 6fr 2fr;
+    grid-template-rows: 1fr;
+}
+
+select{
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid black;
+    grid-column: 1;
+    grid-row: 1;
+    width: 90%;
+    text-align: center;
+}
+
+option{
+    width: 90%;
+    text-align: center;
+}
+
+.dropdownBtn{
+    color:black;
+    background-color: grey;
+    border-style: solid;
+    border-width: 2px;
+    padding: 20px;
+    font-size: 16px;
+}
+
+.dropdown{
+    position: relative;
+    display: inline-block;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.dropdown-content{
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    left:0;
+    z-index: 1;
+}
+
+.dropdown-content a{
+    color: black;
+    padding: 12px 16px;
+    display: block;
+    text-decoration: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content{
+    display:block;
+}
+
+.dropdown:hover .dropdownBtn{
+    background-color: aqua;
+}
+
+#chatTextEingabe{
+    width: 98%;
+    resize: none;
+    float: none;
+    border-radius: 10px;
+    font-size: 15px;
+    border-style: solid;
+    border-width: 2px;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.sendButton{
+    color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    width: 70%;
+    height: 40px;
+    font-size: 20px;
+    float: right;
+    grid-column: 3;
+    grid-row: 1;
+    align-self: center;
+    text-align: center;
+}
+
+.sendButton:hover{
+    background-color: lightgrey;
+}
+
+.sendButton:active{
+    transform: translateY(4px);
+}
