@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<h1>Projektarbeit Test</h1>
+<h1>Projektarbeit Chat</h1>
 
 <div class="grid-block">
 
@@ -17,30 +17,31 @@
     </div>
 
     <div class="nickNameArea">
-        <label>Name: </label>
+        <label>Nickname:</label>
         <label for="nicknameArea"></label><textarea id="nicknameArea"></textarea>
         <button type="button" onclick="buttonNicknameSave()">Speichern</button>
     </div>
 
 
     <div class="leftOfChat">
-
+        <p>Das hier ist ein Paragraph</p>
     </div>
 
 <div class="chatfenster">
     <label for="chatTextArea"></label><textarea readonly id="chatTextArea"></textarea>
 </div>
 
-    <div class="rightOfChat"> </div>
+    <div class="rightOfChat">
+        <p>Das hier ist auch ein Paragraph, aber rechts</p>
+    </div>
 
 <div class="chatinteraktion">
-    <div class="dropdown">
-        <button href="javascript:void(0)" class="dropdownBtn">Sprache</button>
-        <div class="dropdown-content">
-        <a href="#">Deutsch</a>
-        <a href="#">English</a>
-        </div>
-    </div>
+        <label for="dropdownOptions"></label><select id="dropdownOptions" name="options" onchange="selectLanguageChange()">Sprache
+            <option value="de">Deutsch</option>
+            <option value="eng">English</option>
+            <option value="sp">Spanisch</option>
+    </select>
+
 
     <label for="chatTextEingabe"></label><textarea id="chatTextEingabe"></textarea>
 
