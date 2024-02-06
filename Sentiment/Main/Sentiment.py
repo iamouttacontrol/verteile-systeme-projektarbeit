@@ -1,32 +1,18 @@
+import os
 import requests
-from fastapi import FastAPI
-from pydantic import BaseModel
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class Sentiment:
-	url = "https://twinword-sentiment-analysis.p.rapidapi.com/analyze/"
+	url = os.environ.get("URL")
 	headers = {
-		"X-RapidAPI-Key": "84a49088d0msh16c065ef4f13cc6p1b0966jsnaccf04991951",
-		"X-RapidAPI-Host": "twinword-sentiment-analysis.p.rapidapi.com"
+		"X-RapidAPI-Key": os.environ.get("XKEY"),
+		"X-RapidAPI-Host": os.environ.get("XHOST")
 	}
 
-	def sentiment_analysis(self, text: str) :
+	def sentiment_analysis(self, text: str):
 		querystring = {"text": text}
 		response = requests.get(self.url, headers=self.headers, params=querystring)
 		return response.json()
-
-
-class Message(BaseModel):
-	message: str
-	name: str
-	sentiment: str
-
-
-app = FastAPI()
-sentiment = Sentiment()
-
-
-@app.post("/sendMessage")
-def receive_message(message: Message):
-	message.sentiment = sentiment.sentiment_analysis(message.message)
-	return message
