@@ -24,10 +24,9 @@ class Message(BaseModel):
 
 app = FastAPI()
 sentiment = Sentiment()
-print(sentiment.sentiment_analysis("I like that"))
 
 
 @app.post("/sendMessage")
 def receive_message(message: Message):
-	message.sentiment = sentiment.sentiment_analysis(message.message)["score"]
+	message.sentiment = sentiment.sentiment_analysis(message.message)
 	return message
