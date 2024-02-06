@@ -13,7 +13,7 @@ from datetime import datetime
 #todo: schau dir ChatCompletion vs. Completions an -> was ist der Unterschied?
 #todo: Was ist default, was ist Streaming? -> was ist der Unterschied?
 
-api_key = os.getenv('OPENAI_API_KEY', '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')
+api_key = os.getenv('OPENAI_API_KEY', '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')
 openai.api_key = api_key
 
 
