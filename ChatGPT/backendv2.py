@@ -4,6 +4,8 @@ import os
 import hashlib
 import time
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv()
 
 #todo: api_key in eine .env Datei packen und sicherer setzen + in gitIgnore packen
 #todo: jede nachricht enthält eine eigene JSON? -> macht es Sinn, dass wir in der Antwort die letzten 2-3 Nachrichten mitgeben?
@@ -13,9 +15,10 @@ from datetime import datetime
 #todo: schau dir ChatCompletion vs. Completions an -> was ist der Unterschied?
 #todo: Was ist default, was ist Streaming? -> was ist der Unterschied?
 
-api_key = os.getenv('OPENAI_API_KEY', 'key') #paste key
-openai.api_key = api_key
 
+load_dotenv()
+api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = api_key
 
 save_path = r"C:\Users\tyilm\Desktop\verteile-systeme-projektarbeit\ChatGPT\messages"
 
