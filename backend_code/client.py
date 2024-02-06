@@ -7,8 +7,11 @@ class Client(protocol.Protocol):
         self.lang = lang
     
     def connectionMade(self):
-        data = {"message": "Hello, server!", "lang":self.lang}
-        self.transport.write(json.dumps(data).encode())
+        data = {"lang":self.lang}
+        print("Connected")
+        
+    def send_data(self):
+        self.transport.write(json.dumps("test").encode())        
 
     def dataReceived(self, data):
         response = json.loads(data.decode())
@@ -37,5 +40,8 @@ class ClientFactory(protocol.ReconnectingClientFactory):
         
 
 if __name__ == '__main__':
-    reactor.connectTCP('localhost', 8000, ClientFactory())
+    a = reactor.connectTCP('localhost', 8000, ClientFactory())
+    print(type(a))
     reactor.run()
+    #a.send_data()
+    
