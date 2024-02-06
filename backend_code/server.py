@@ -1,5 +1,6 @@
 from twisted.internet import protocol, reactor, endpoints
 import json
+import Sentiment
 
 class Server(protocol.Protocol):
     def __init__(self, factory):
@@ -25,7 +26,6 @@ class Server(protocol.Protocol):
         response_data = {"response": "Received data successfully"}
         
         for c in self.factory.clients:
-            print(c.lang)
             c.transport.write(json.dumps(response_data).encode())
 
 class ServerFactory(protocol.Factory):
