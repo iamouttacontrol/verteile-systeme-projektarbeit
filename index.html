@@ -12,14 +12,14 @@
 
 <div class="grid-block">
 
-    <div class="topbar">
+    <div class="top-bar">
 
     </div>
 
     <div class="nickNameArea">
         <label>Name: </label>
-        <textarea id="nicknameArea"></textarea>
-        <button type="button">Speichern</button>
+        <label for="nicknameArea"></label><textarea id="nicknameArea"></textarea>
+        <button type="button" onclick="buttonNicknameSave()">Speichern</button>
     </div>
 
 
@@ -28,7 +28,7 @@
     </div>
 
 <div class="chatfenster">
-    <textarea readonly id="chatTextArea"></textarea>
+    <label for="chatTextArea"></label><textarea readonly id="chatTextArea"></textarea>
 </div>
 
     <div class="rightOfChat"> </div>
@@ -39,11 +39,10 @@
         <div class="dropdown-content">
         <a href="#">Deutsch</a>
         <a href="#">English</a>
-        <a href="#">Italienisch</a>
         </div>
     </div>
 
-    <textarea id="chatTextEingabe"></textarea>
+    <label for="chatTextEingabe"></label><textarea id="chatTextEingabe"></textarea>
 
     <button type="button" class="sendButton" onclick="buttonSendAction()">Senden</button>
 </div>
