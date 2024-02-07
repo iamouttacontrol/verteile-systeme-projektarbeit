@@ -4,8 +4,9 @@ from twisted.internet import reactor
 from autobahn.twisted.websocket import WebSocketServerFactory, \
     WebSocketServerProtocol
 
-from Translator import translateAndConvert
+from Translator import translate_and_convert
 from ChatGPT import listenToMessages
+from Sentiment import sentiment_analysis
 
 
 
@@ -47,8 +48,6 @@ class ChatServerFactory(WebSocketServerFactory):
 
     def broadcast(self, message, sender):
         for client in self.clients:
-            text="test"
-            sentiment_analysis(text)
             client.sendMessage(message.encode('utf8'))
 
 

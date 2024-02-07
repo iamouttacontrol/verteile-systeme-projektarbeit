@@ -15,13 +15,18 @@ def translate_text(json):
     result["translatedText"] = html.unescape(result["translatedText"])
     return result
 
-def translateAndConvert(json):
+def translate_and_convert(json):
     response = translate_text(json)
     standard_format = {"name" : json["name"], "message" : response["translatedText"], "language" : json["language"], "timestamp" : json["timestamp"]}
     return standard_format
 
-with open("tests/test.json") as test:
-    json = json.load(test)
+
+text = {
+  "name" : "Philip",
+  "message" : "Hallo, Ich bin ein Bär",
+  "language" : "EN",
+  "timestamp" : 0
+}
 
 
-print(translateAndConvert(json))
+print(translate_and_convert(text))

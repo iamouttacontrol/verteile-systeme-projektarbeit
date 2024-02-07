@@ -90,7 +90,7 @@ def checkSentiment():
         json_object = json.load(openfile)
 
     sentiment_value = json_object['sentiment']
-    print("Sentiment: " + str(sentiment_value))
+    print("Backend: " + str(sentiment_value))
     return sentiment_value
 
 
