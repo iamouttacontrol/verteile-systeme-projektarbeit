@@ -1,6 +1,8 @@
 let savedNickname;
 let chosenlanguage = "de";
 
+const socket = new WebSocket("ws://localhost:9000");
+
 function buttonSendAction(){
     const textFenster = document.getElementById("chatTextArea");
     const eingabeFester = document.getElementById("chatTextEingabe");
@@ -24,24 +26,30 @@ function buttonSendAction(){
         timestamp: timestamp,
         language: chosenlanguage
     }
-    textFenster.innerHTML = JSON.stringify(chatnachricht);
+    data = JSON.stringify(chatnachricht);
+    
+    socket.send(data)
 }
 
 function test() {
-    const socket = new WebSocket("ws://localhost:8000")
-        // Connection opened
-        socket.addEventListener("open", (event) => {
-            //var data = JSON.stringify({"lang":"data"});
-            data="test"
-            console.log(data);
-            socket.send(JSON.stringify(data));
-        });
+    
+    // Connection opened
+    socket.addEventListener("open", (event) => {
+        //var data = JSON.stringify({"lang":"data"});
+        data="test"
+        console.log(data);
+        socket.send(data);
+    });
 
+    
+    // Listen for messages
+    socket.addEventListener("message", (event) => {
+        console.log("Message from server ", event.data);
+        document.getElementById("chatTextArea").innerHTML = event.data;
+    });
+
+    
         
-        // Listen for messages
-        socket.addEventListener("message", (event) => {
-            console.log("Message from server ", event.data);
-        });
 }            
 
 function buttonNicknameSave(){
