@@ -5,13 +5,26 @@ import json
 class Client(protocol.Protocol):    
     def __init__(self, lang):
         self.lang = lang
+        reactor.callInThread(self.send_msg)
     
     def connectionMade(self):
-        data = {"lang":self.lang}
-        print("Connected")
+        ask = "choose lang: "
+        data = input(ask)
+        data = {"lang":data}
+        self.lang = data
+        print("Client lang: ", self.lang)
+        self.transport.write(json.dumps(data).encode())
         
-    def send_data(self):
-        self.transport.write(json.dumps("test").encode())        
+    def send_msg(self):
+        while True:
+            ask = "Enter your message: "
+            data = input(ask)
+            print(json.dumps(data).encode())
+            if data == "fr":
+                data = {"lang":"fr"}
+                self.transport.write(json.dumps(data).encode())      
+            else:
+                self.transport.write(json.dumps(data).encode())      
 
     def dataReceived(self, data):
         response = json.loads(data.decode())
@@ -43,5 +56,4 @@ if __name__ == '__main__':
     a = reactor.connectTCP('localhost', 8000, ClientFactory())
     print(type(a))
     reactor.run()
-    #a.send_data()
     
