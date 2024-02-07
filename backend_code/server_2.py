@@ -15,6 +15,7 @@ class ChatServerProtocol(WebSocketServerProtocol):
     def onMessage(self, payload, isBinary):
         if not isBinary:
             message = payload.decode('utf8')
+            
             print(f"Nachricht empfangen: {message}")
             self.factory.broadcast(message, self)
 
@@ -34,7 +35,7 @@ class ChatServerFactory(WebSocketServerFactory):
 
     def unregister(self, client):
         if client in self.clients:
-            print(f"Client {client.peer} deregistriert.")
+            print(f"Client {client.peer} registriert.")
             self.clients.remove(client)
 
     def broadcast(self, message, sender):
