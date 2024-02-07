@@ -42,7 +42,7 @@ class ChatServerFactory(WebSocketServerFactory):
             client.sendMessage(message.encode('utf8'))
 
 if __name__ == "__main__":
-    factory = ChatServerFactory("ws://localhost:9000")
+    factory = ChatServerFactory("ws://192.168.1.51:9000")
     factory.protocol = ChatServerProtocol
     reactor.listenTCP(9000, factory)
     print("WebSocket-Server gestartet auf Port 9000.")

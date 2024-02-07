@@ -94,13 +94,16 @@ h1{
     align-self: center;
     background-color: white;
     width: 100%;
-    height: 100%;
+    height: 400px; /* Beispielhöhe oder passen Sie diese an Ihren Bedarf an */
     resize: none;
     border-style: solid;
     border-color: black;
     border-width: 3px;
     border-radius: 20px;
+    overflow-y: auto; /* Ermöglicht vertikales Scrollen, wenn nötig */
 }
+
+
 .chatinteraktion{
     grid-row: 3;
     grid-column: 2;
