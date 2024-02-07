@@ -22,11 +22,11 @@ class Server(protocol.Protocol):
     def connectionLost(self, reason):
         self.factory.clients.remove(self)
         
-    def dataReceived(self, data: Json):
-        received_data = json.loads(data.decode())
-
-        print("received ",received_data)
+    def dataReceived(self, data):
+        print(data)
         try:
+            received_data = json.loads(data.decode())
+            print("received ",received_data)
             language = received_data["lang"]
             print("changed language to:" + language)
             self.lang = received_data["lang"]

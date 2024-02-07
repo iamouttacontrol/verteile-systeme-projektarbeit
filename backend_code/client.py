@@ -54,6 +54,5 @@ class ClientFactory(protocol.ReconnectingClientFactory):
 
 if __name__ == '__main__':
     a = reactor.connectTCP('localhost', 8000, ClientFactory())
-    print(type(a))
     reactor.run()
     
