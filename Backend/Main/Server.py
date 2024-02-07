@@ -9,8 +9,6 @@ from ChatGPT import listenToMessages
 from Sentiment import sentiment_analysis
 
 
-
-
 class ChatServerProtocol(WebSocketServerProtocol):
     def onConnect(self, request):
         print(f"Client verbunden: {request.peer}")
