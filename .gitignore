@@ -1,0 +1,4 @@
+.idea
+/Backend/Main/credentials.json
+/Backend/Main/.env
+venv

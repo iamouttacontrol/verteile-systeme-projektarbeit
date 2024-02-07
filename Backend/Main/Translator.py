@@ -5,7 +5,7 @@ import html
 
 def translate_text(json):
     credentials_path = "credentials.json"
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] =credentials_path
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
     translate_client = translate.Client()
     message = json["message"]
     target = json["language"]
