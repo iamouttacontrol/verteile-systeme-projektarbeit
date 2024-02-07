@@ -3,7 +3,7 @@ let chosenlanguage = "de";
 
 const socket = new WebSocket("ws://localhost:9000");
 
-function buttonSendAction(){
+function buttonSendAction() {
     const eingabeFenster = document.getElementById("chatTextEingabe");
 
     let eingabeText = eingabeFenster.value;
@@ -31,42 +31,39 @@ function buttonSendAction(){
 }
 
 function test() {
-    
+
     // Connection opened
     socket.addEventListener("open", (event) => {
         //var data = JSON.stringify({"lang":"data"});
-        data="test"
+        data = "test"
         console.log(data);
         socket.send(data);
     });
 
-    
-   socket.addEventListener("message", (event) => {
-    console.log("Message from server ", event.data);
-    const chatTextArea = document.getElementById("chatTextArea");
-    // Parsen der empfangenen JSON-Nachricht
-    const empfangeneNachricht = JSON.parse(event.data);
 
-    // Formatierung der Nachricht: "nickname: nachricht (timestamp)"
-    const formatierteNachricht = `${empfangeneNachricht.nickname}: ${empfangeneNachricht.message} (${empfangeneNachricht.timestamp})`;
+    socket.addEventListener("message", (event) => {
+        console.log("Message from server ", event.data);
+        const chatTextArea = document.getElementById("chatTextArea");
+        // Parsen der empfangenen JSON-Nachricht
+        const empfangeneNachricht = JSON.parse(event.data);
 
-    // Hinzufügen der formatierten Nachricht zum Chatfenster, mit Zeilenumbruch für jede neue Nachricht
-    chatTextArea.value += (chatTextArea.value ? "\n" : "") + formatierteNachricht;
-    scrollToBottom();
-});
+        // Formatierung der Nachricht: "nickname: nachricht (timestamp)"
+        const formatierteNachricht = `(${empfangeneNachricht.timestamp}) ${empfangeneNachricht.nickname}: ${empfangeneNachricht.message}`;
 
-    
-        
-}            
+        // Hinzufügen der formatierten Nachricht zum Chatfenster, mit Zeilenumbruch für jede neue Nachricht
+        chatTextArea.value += (chatTextArea.value ? "\n" : "") + formatierteNachricht;
+        scrollToBottom();
+    });
+}
 
-function buttonNicknameSave(){
+function buttonNicknameSave() {
     const nicknameEingabe = document.getElementById("nicknameArea");
     savedNickname = nicknameEingabe.value;
     nicknameEingabe.readOnly = true;
     nicknameEingabe.style.backgroundColor = "blue";
 }
 
-function selectLanguageChange(){
+function selectLanguageChange() {
     const selectLanguage = document.getElementById("dropdownOptions");
     chosenlanguage = selectLanguage.value;
 }
