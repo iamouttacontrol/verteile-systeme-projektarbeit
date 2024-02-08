@@ -2,7 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
-from Backend.Main import Message
+from Message import Message
 
 load_dotenv()
 

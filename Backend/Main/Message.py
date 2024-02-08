@@ -1,8 +1,14 @@
 from pydantic import BaseModel
 
 
-class Message(BaseModel):
-    name: str
+class MessageFromClient(BaseModel):
+    username: str
+    message: str
+    language: str
+    timestamp: str
+    
+class MessageToClient(BaseModel):
+    username: str
     message: str
     language: str
     timestamp: str

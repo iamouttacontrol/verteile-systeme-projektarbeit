@@ -2,11 +2,11 @@ import os
 import html
 from google.cloud import translate_v2 as translate
 
-from Backend.Main import Message
+from Message import Message
 
 
 def translate_text(message: Message):
-    credentials_path = "credentials.json"
+    credentials_path = "Backend/Main/credentials.json"
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
     translate_client = translate.Client()
     message_str = message.message

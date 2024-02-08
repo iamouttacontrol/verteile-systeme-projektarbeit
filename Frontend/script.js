@@ -20,7 +20,7 @@ function buttonSendAction() {
 
     // JSON String bilden
     const chatnachricht = {
-        nickname: savedNickname,
+        username: savedNickname,
         message: eingabeText,
         timestamp: timestamp,
         language: chosenlanguage
@@ -35,9 +35,9 @@ function test() {
     // Connection opened
     socket.addEventListener("open", (event) => {
         //var data = JSON.stringify({"lang":"data"});
-        data = "test"
-        console.log(data);
-        socket.send(data);
+        //data = "test"
+        //console.log(data);
+        //socket.send(data);
     });
 
 

@@ -5,10 +5,10 @@ from twisted.internet import reactor
 from autobahn.twisted.websocket import WebSocketServerFactory, \
     WebSocketServerProtocol
 
-from Backend.Main import Message
-from Translator import translate_text
-from ChatGPT import listenToMessages
-from Sentiment import sentiment_analysis
+from Message import MessageFromClient, MessageToClient
+#from Translator import translate_text
+#from ChatGPT import listenToMessages
+#from Sentiment import sentiment_analysis
 
 
 class ChatServerProtocol(WebSocketServerProtocol):
@@ -21,8 +21,18 @@ class ChatServerProtocol(WebSocketServerProtocol):
         print("WebSocket-Verbindung geöffnet.")
         self.factory.register(self)
 
-    def onMessage(self, message: Message, isBinary):
+    def onMessage(self, payload, isBinary):
         if not isBinary:
+            message = payload.decode('utf8')
+            print(type(message))
+            print(f"Nachricht empfangen: {message}")
+            message = json.loads(message)
+            print(type(message))
+            #message = MessageFromClient.model_validate(message["username"], message["message"], message["language"], message["timestamp"])
+            message = MessageFromClient.model_validate(message)
+            print(type(message))
+            
+            
             if message.language != "EN":
                 message.language = "EN"
             #print(f"Nachricht empfangen: {message}")
@@ -72,7 +82,7 @@ class ChatServerFactory(WebSocketServerFactory):
 
 if __name__ == "__main__":
     chatServer = ChatServerProtocol()
-
+    '''
     #Message 2
     message1 = Message(name="Philip", message="Hi wie gehts?", language="EN", timestamp="11:24:39", sentiment=0.0)
     chatServer.onMessage(message1, False)
@@ -86,7 +96,8 @@ if __name__ == "__main__":
     message3 = Message(name="Tolga", message="alexa, wie ist die Stimmung im Chat?", language="EN",
                        timestamp="11:24:39", sentiment=0.0)
     chatServer.onMessage(message3, False)
-
+    '''
+    
     factory = ChatServerFactory("ws://localhost:9000")
     factory.protocol = ChatServerProtocol
     reactor.listenTCP(9000, factory)
