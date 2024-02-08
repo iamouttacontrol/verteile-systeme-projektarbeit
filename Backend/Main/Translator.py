@@ -1,35 +1,31 @@
-import json
 import os
-from google.cloud import translate_v2 as translate
 import html
+from google.cloud import translate_v2 as translate
 
-def translate_text(json):
+from Backend.Main import Message
+
+
+def translate_text(message: Message):
     credentials_path = "credentials.json"
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
     translate_client = translate.Client()
-    message = json["message"]
-    target = json["language"]
-    if isinstance(message, bytes):
-        message = message.decode("utf-8")
-    result = translate_client.translate(message, target_language=target)
+    message_str = message.message
+    target = message.language
+    if isinstance(message_str, bytes):
+        message_str = message_str.decode("utf-8")
+    result = translate_client.translate(message_str, target_language=target)
     result["translatedText"] = html.unescape(result["translatedText"])
     return result
 
-def translate_and_convert(json):
-    response = translate_text(json)
-    standard_format = {"name" : json["name"], "message" : response["translatedText"], "language" : json["language"],
-                       "timestamp" : json["timestamp"], "sentiment": json["sentiment"]}
+def translate_and_convert(message: Message):
+    response = translate_text(message)
+    standard_format = {"name" : message.name, "message" : response["translatedText"], "language" : message.language,
+                       "timestamp" : message.timestamp, "sentiment": message.sentiment}
+    message.message = response["translatedText"]
     return standard_format
 
+message = Message(name="Philip", message="Hallo, Ich bin ein Bär", language="EN", timestamp="11:24:39", sentiment=0.0)
 
-text = {
-    "name" : "Philip",
-    "message" : "Hallo, Ich bin ein Bär",
-    "language" : "EN",
-    "timestamp" : 123,
-    "sentiment" : 0.1412
-}
+print(type(message))
 
-#print(type(text))
-
-#print(translate_and_convert(text))
+print(translate_and_convert(message))
