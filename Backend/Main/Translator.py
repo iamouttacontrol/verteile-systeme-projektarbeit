@@ -2,7 +2,7 @@ import os
 import html
 from google.cloud import translate_v2 as translate
 
-from Backend.Main import MessageFromClient, MessageToClient
+from Message import MessageFromClient, MessageToClient
 
 
 def translate_text(message: MessageFromClient | MessageToClient):

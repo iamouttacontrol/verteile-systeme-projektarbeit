@@ -1,8 +1,21 @@
 let savedNickname;
 let chosenlanguage = "de";
 
-const socket = new WebSocket("ws://localhost:9000");
+let socket;
 
+async function helperFunc() {
+    return new Promise(function(resolve, reject) {
+        resolve('Daten geladen!');
+    });
+}
+
+async function getOnlineUser() {
+    console.log('Start');
+    setInterval(async function() {
+        const data = await fetchData();
+        console.log(data);
+    }, 5000);
+}
 
 function buttonSendAction() {
     const eingabeFenster = document.getElementById("chatTextEingabe");
@@ -40,7 +53,8 @@ function buttonSendAction() {
 }
 
 function establishConnection() {
-
+    socket = new WebSocket("ws://localhost:9000");
+    
     // Connection opened
     socket.addEventListener("open", (event) => {
         //var data = JSON.stringify({"lang":"data"});
@@ -50,17 +64,29 @@ function establishConnection() {
 
 
     socket.addEventListener("message", (event) => {
-        console.log("Message from server ", event.data);
-        const chatTextArea = document.getElementById("chatTextArea");
+        //console.log("Message from server ", event.data);
         // Parsen der empfangenen JSON-Nachricht
-        const empfangeneNachricht = JSON.parse(event.data);
+        const receivedMessage = JSON.parse(event.data);
 
-        // Formatierung der Nachricht: "nickname: nachricht (timestamp)"
-        const formatierteNachricht = `(${empfangeneNachricht.timestamp}) ${empfangeneNachricht.username}: ${empfangeneNachricht.message}`;
+        if(receivedMessage.numOfClients) {
+            const currentUsersList = document.getElementById("currentUsers");
+            currentUsersList.innerHTML = '';
 
-        // Hinzufügen der formatierten Nachricht zum Chatfenster, mit Zeilenumbruch für jede neue Nachricht
-        chatTextArea.value += (chatTextArea.value ? "\n" : "") + formatierteNachricht;
-        scrollToBottom();
+            for (const user in receivedMessage.clientsOnline) {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${receivedMessage.clientsOnline[user].username}: ${receivedMessage.clientsOnline[user].language}`;
+                currentUsersList.appendChild(listItem)
+            }
+        }
+        else {
+            const chatTextArea = document.getElementById("chatTextArea");
+            // Formatierung der Nachricht: "nickname: nachricht (timestamp)"
+            const formatMessage = `(${receivedMessage.timestamp}) ${receivedMessage.username}: ${receivedMessage.message}`;
+
+            // Hinzufügen der formatierten Nachricht zum Chatfenster, mit Zeilenumbruch für jede neue Nachricht
+            chatTextArea.value += (chatTextArea.value ? "\n" : "") + formatMessage;
+            scrollToBottom();
+        }
     });
 }
 function buttonNicknameSave() {
