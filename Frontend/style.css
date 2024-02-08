@@ -12,6 +12,11 @@ h1{
     margin-left: 10em;
 }
 
+.flaggenImage{
+    width: 30px;
+    height: auto;
+}
+
 .grid-block{
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
@@ -26,7 +31,7 @@ h1{
     grid-column: 2;
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 15% 50% 35%;
+    grid-template-columns: 20% 60% 20%;
 }
 
 .nickNameArea button{
@@ -51,6 +56,25 @@ h1{
     transform: translateY(4px);
 }
 
+.nickNameArea input{
+    height: 40px;
+    width: 95%;
+    align-self: center;
+    float: left;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.nickNameArea input:active{
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px;
+}
+
 .nickNameArea textarea{
     resize: none;
     height: 30px;
@@ -58,19 +82,27 @@ h1{
     grid-row: 1;
     grid-column: 2;
     align-self: center;
+    display: flex;
+    justify-content: center;
 }
 
 .nickNameArea label{
     color: black;
     height: 30px;
     font-size: 20px;
+
     grid-row: 1;
     grid-column: 1;
+
     text-decoration: underline;
     text-align: center;
+
     margin-top: 6px;
     margin-right: 10px;
     margin-left: 10px;
+
+    display: flex;
+    justify-content: center;
     align-self: center
 ;
 }
@@ -83,6 +115,9 @@ h1{
 .chatfenster{
     grid-row: 2;
     grid-column: 2;
+
+    display: flex;
+    justify-content: center;
 }
 
 .rightOfChat{
@@ -91,64 +126,57 @@ h1{
 }
 
 #chatTextArea{
-    align-self: center;
     background-color: white;
-    width: 100%;
-    height: 400px; /* Beispielhöhe oder passen Sie diese an Ihren Bedarf an */
+    width: 80%;
+    height: 95%; /* Beispielhöhe oder passen Sie diese an Ihren Bedarf an */
     resize: none;
     border-style: solid;
     border-color: black;
     border-width: 3px;
-    border-radius: 20px;
+    border-radius: 10px;
     overflow-y: auto; /* Ermöglicht vertikales Scrollen, wenn nötig */
 }
-
 
 .chatinteraktion{
     grid-row: 3;
     grid-column: 2;
     display: grid;
-    grid-template-columns: 1fr 6fr 2fr;
+    grid-template-columns: 20% 60% 20%;;
     grid-template-rows: 1fr;
-}
-
-select{
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid black;
-    grid-column: 1;
-    grid-row: 1;
-    width: 90%;
-    text-align: center;
-}
-
-option{
-    width: 90%;
-    text-align: center;
 }
 
 .dropdownBtn{
     color:black;
     background-color: grey;
+
     border-style: solid;
     border-width: 2px;
-    padding: 20px;
+    border-radius: 10px;
+
+
     font-size: 16px;
+    width: 80%;
+    height: 45px;
 }
 
 .dropdown{
     position: relative;
-    display: inline-block;
     grid-column: 1;
     grid-row: 1;
+
+    display: inline-block;
+    justify-content: center;
+
+
 }
 
 .dropdown-content{
     display: none;
     position: absolute;
-    min-width: 160px;
+    width: 80%;
     left:0;
     z-index: 1;
+    text-align: center;
 }
 
 .dropdown-content a{
@@ -170,16 +198,38 @@ option{
     background-color: aqua;
 }
 
+#chatInputArea{
+    display: flex;
+    justify-content: center;
+}
+
 #chatTextEingabe{
-    width: 98%;
+    align-self: center;
     resize: none;
     float: none;
-    border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+
+    width: 95%;
+    height: 40px;
     font-size: 15px;
-    border-style: solid;
+
+
     border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px;
+
     grid-column: 2;
     grid-row: 1;
+}
+.sendButtonArea{
+    display: flex;
+    justify-content: center;
+    grid-column: 3;
+    grid-row: 1;
+
 }
 
 .sendButton{
@@ -188,11 +238,9 @@ option{
     border-width: 2px;
     border-radius: 10px;
     width: 70%;
-    height: 40px;
+    height: 43px;
     font-size: 20px;
     float: right;
-    grid-column: 3;
-    grid-row: 1;
     align-self: center;
     text-align: center;
 }
