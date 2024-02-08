@@ -6,7 +6,7 @@ from autobahn.twisted.websocket import WebSocketServerFactory, \
     WebSocketServerProtocol
 
 from Backend.Main import Message
-from Translator import translate_and_convert
+from Translator import translate_text
 from ChatGPT import listenToMessages
 from Sentiment import sentiment_analysis
 
@@ -24,7 +24,7 @@ class ChatServerProtocol(WebSocketServerProtocol):
     def onMessage(self, message: Message, isBinary):
         if not isBinary:
             print(f"Nachricht empfangen: {message}")
-            translated_message = translate_and_convert(message)
+            translated_message = translate_text(message)
             print(f"Nachricht übersetzt: {translated_message}")
             sentiment = sentiment_analysis(translated_message)
             sentiment_message = translated_message
