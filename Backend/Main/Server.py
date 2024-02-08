@@ -1,4 +1,6 @@
 import json
+
+from pydantic import BaseModel
 from twisted.internet import reactor
 #from twisted.web.server import Site
 #from twisted.web.static import File
@@ -10,9 +12,17 @@ from ChatGPT import listenToMessages
 from Sentiment import sentiment_analysis
 
 
-class ChatServerProtocol(WebSocketServerProtocol):
+class Message(BaseModel):
+    name: str
+    message: str
+    language: str
+    timestamp: str
+    sentiment: float
 
-    chatHistory = []
+
+class ChatServerProtocol(WebSocketServerProtocol):
+    chatHistory = [dict]
+
     def onConnect(self, request):
         print(f"Client verbunden: {request.peer}")
 
@@ -20,11 +30,10 @@ class ChatServerProtocol(WebSocketServerProtocol):
         print("WebSocket-Verbindung geöffnet.")
         self.factory.register(self)
 
-    def onMessage(self, payload, isBinary):
+    def onMessage(self, message: Message, isBinary):
         if not isBinary:
-            message = payload.decode('utf8')
             print(f"Nachricht empfangen: {message}")
-            translated_message = translate_and_convert(json.loads(message))
+            translated_message = translate_and_convert(json.dumps(message))
             print(f"Nachricht übersetzt: {translated_message}")
             sentiment = sentiment_analysis(translated_message)
             sentiment_message = translated_message
@@ -39,6 +48,7 @@ class ChatServerProtocol(WebSocketServerProtocol):
             else:
                 print("History =< 6")
             print(self.chatHistory)
+
             #self.factory.broadcast(message, self)
 
     def onClose(self, wasClean, code, reason):
@@ -69,16 +79,13 @@ class ChatServerFactory(WebSocketServerFactory):
 if __name__ == "__main__":
     chatServer = ChatServerProtocol()
     #Message 1
-    payload = {"name": "Matthias", "message": "Hallo, wie gehts?",
-               "language": "EN", "timestamp": 123123, "sentiment": 0}
-    payload_encoded = json.dumps(payload).encode('UTF-8')
-    chatServer.onMessage(payload_encoded, False)
+    message = Message(name="Matthias", message="Hallo, wie gehts?", language="EN", timestamp="11:24:39", sentiment=0.0)
+
+    chatServer.onMessage(message, False)
 
     #Message 2
-    payload = {"name": "Tolga", "message": "Hallo, wie gehts?",
-               "language": "EN", "timestamp": 123123, "sentiment": 0}
-    payload_encoded = json.dumps(payload).encode('UTF-8')
-    chatServer.onMessage(payload_encoded, False)
+    message.name = "Tolga"
+    chatServer.onMessage(message, False)
 
     factory = ChatServerFactory("ws://localhost:9000")
     factory.protocol = ChatServerProtocol

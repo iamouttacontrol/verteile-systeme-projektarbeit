@@ -22,7 +22,7 @@ save_path = r"C:\Users\tyilm\Desktop\verteile-systeme-projektarbeit\ChatGPT\mess
 messagesPath= r"C:\Users\tyilm\Desktop\verteile-systeme-projektarbeit\ChatGPT\messages\example1.json"
 
 
-def listenToMessages():
+def listenToMessages(chatHistory):
     with open(messagesPath, 'r') as openfile:
         json_object = json.load(openfile)
 
@@ -36,14 +36,14 @@ def listenToMessages():
     #levienshtein distance -> wie viele Buchstaben müssen wir ändern, um von einem Wort zum anderen zu kommen
     if similarity > 70:
         print("Bot soll antworten")
-        create_chatbot()
+        return create_chatbot(chatHistory)
     else:
         print("Bot soll nicht antworten")
 
 
-def create_chatbot():
-    messages = []
-    sentiment=checkSentiment()
+def create_chatbot(chatHistory):
+    messages = chatHistory
+    sentiment = checkSentiment(chatHistory)
     #0-1 : 1 ist ein kreativer
     #sentiment=-1 -> ist sehr negativ gelaunt -> eher konsistenterer antworten
     #sentiment=-0 -> ist neutral gelaunt -> eher normale antworten
@@ -52,7 +52,7 @@ def create_chatbot():
     min_temp = 0.2
     max_temp = 0.8
 
-    temperature = temperature = 0.5 * (sentiment + 1) * (max_temp - min_temp) + min_temp
+    temperature = 0.5 * (sentiment + 1) * (max_temp - min_temp) + min_temp
 
     print("Temperatur ist: "+str(temperature))
     print("Ich bin ready...!")
@@ -83,42 +83,13 @@ def create_chatbot():
         messages.append({"role": "assistant", "content": response_message})
         print("\n" + response_message + "\n")
 
-        save_response_as_json(response_message)
+        return response_message
 
-def checkSentiment():
-    with open(messagesPath, 'r') as openfile:
-        json_object = json.load(openfile)
+def checkSentiment(chatHistory):
+    sentiment_value = 0
+    for json_object in chatHistory:
+        sentiment_value += json_object['sentiment']
 
-    sentiment_value = json_object['sentiment']
+    sentiment_value = sentiment_value / len(chatHistory)
     print("Backend: " + str(sentiment_value))
     return sentiment_value
-
-
-def save_response_as_json(message):
-    # Erstellen eines Hash-Codes basierend auf der aktuellen Zeit -> damitt wir immer ein indiduellen namen haben
-    hash_code = hashlib.sha256(str(time.time()).encode()).hexdigest()[:10]
-    file_name = f"message-{hash_code}.json"
-    full_path = os.path.join(save_path, file_name)
-    current_time = datetime.now().strftime("%H:%M:%S")
-
-
-    # Erstellen der Nachrichtenstruktur
-    message_structure = {
-        "nickname": "ChatGPT",
-        "message": message,
-        "time": current_time
-
-    }
-
-    # Sicherstellen, dass der Speicherpfad existiert
-    os.makedirs(save_path, exist_ok=True)
-
-    # Speichern der Nachricht in einer JSON-Datei im angegebenen Verzeichnis
-    # Öffnen der Datei mit UTF-8 Kodierung
-    with open(full_path, 'w', encoding='utf-8') as outfile:
-        # Sicherstellen, dass Umlaute und spezielle Zeichen korrekt gespeichert werden
-        json.dump(message_structure, outfile, ensure_ascii=False, indent=4)
-
-    print(f"Nachricht gespeichert in: {full_path}")
-
-
