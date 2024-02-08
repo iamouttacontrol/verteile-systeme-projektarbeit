@@ -64,6 +64,9 @@ h1{
     border-style: solid;
     border-color: black;
     border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
 }
 
 .nickNameArea input:active{
@@ -79,19 +82,27 @@ h1{
     grid-row: 1;
     grid-column: 2;
     align-self: center;
+    display: flex;
+    justify-content: center;
 }
 
 .nickNameArea label{
     color: black;
     height: 30px;
     font-size: 20px;
+
     grid-row: 1;
     grid-column: 1;
+
     text-decoration: underline;
     text-align: center;
+
     margin-top: 6px;
     margin-right: 10px;
     margin-left: 10px;
+
+    display: flex;
+    justify-content: center;
     align-self: center
 ;
 }
@@ -138,13 +149,10 @@ h1{
     color:black;
     background-color: grey;
 
-    align-self: center;
-
     border-style: solid;
     border-width: 2px;
     border-radius: 10px;
 
-    text-align: center;
 
     font-size: 16px;
     width: 80%;
@@ -153,9 +161,13 @@ h1{
 
 .dropdown{
     position: relative;
-    display: inline-block;
     grid-column: 1;
     grid-row: 1;
+
+    display: inline-block;
+    justify-content: center;
+
+
 }
 
 .dropdown-content{
@@ -188,13 +200,16 @@ h1{
 
 #chatInputArea{
     display: flex;
-    justify-content: left;
+    justify-content: center;
 }
 
 #chatTextEingabe{
     align-self: center;
     resize: none;
     float: none;
+
+    display: flex;
+    justify-content: center;
 
     width: 95%;
     height: 40px;
@@ -209,6 +224,13 @@ h1{
     grid-column: 2;
     grid-row: 1;
 }
+.sendButtonArea{
+    display: flex;
+    justify-content: center;
+    grid-column: 3;
+    grid-row: 1;
+
+}
 
 .sendButton{
     color: black;
@@ -219,8 +241,6 @@ h1{
     height: 43px;
     font-size: 20px;
     float: right;
-    grid-column: 3;
-    grid-row: 1;
     align-self: center;
     text-align: center;
 }

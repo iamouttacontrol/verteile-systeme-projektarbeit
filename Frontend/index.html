@@ -44,7 +44,7 @@
     </select>
     -->
     <div class="dropdown">
-        <button class="dropdownBtn"><img class="flaggenImage" src="img/Flag_of_Germany.png" alt="Flag_of_Germany"></button>
+        <button class="dropdownBtn"><img id="dropDownFlag" src="img/Flag_of_Germany.png" alt="Flag_of_Germany"></button>
 
         <div class="dropdown-content">
             <a href="#" data-value="1"><img class="flaggenImage" src="img/Flag_of_Germany.png" alt="Flag_of_Germany"> Deutsch </a>
@@ -57,8 +57,9 @@
     <div id="chatInputArea">
         <label for="chatTextEingabe"></label><input id="chatTextEingabe">
     </div>
-
-    <button id="sendButton" type="button" class="sendButton" onclick="buttonSendAction()">Senden</button>
+    <div class="sendButtonArea">
+        <button id="sendButton" type="button" class="sendButton" onclick="buttonSendAction()">Senden</button>
+    </div>
 
 </div>
 </div>
