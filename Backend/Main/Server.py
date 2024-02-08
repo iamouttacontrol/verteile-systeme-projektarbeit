@@ -1,7 +1,5 @@
 import json
 from twisted.internet import reactor
-#from twisted.web.server import Site
-#from twisted.web.static import File
 from autobahn.twisted.websocket import WebSocketServerFactory, \
     WebSocketServerProtocol
 
@@ -81,6 +79,9 @@ class ChatServerFactory(WebSocketServerFactory):
 
 if __name__ == "__main__":
     chatServer = ChatServerProtocol()
+    
+    Message = b'{"username":"test","message":"test message","timestamp":"14:42:21","language":"de"}'
+    chatServer.onMessage(Message, False)
     '''
     #Message 2
     message1 = Message(name="Philip", message="Hi wie gehts?", language="EN", timestamp="11:24:39", sentiment=0.0)
