@@ -6,7 +6,8 @@ class MessageFromClient(BaseModel):
     message: str
     language: str
     timestamp: str
-    
+
+
 class MessageToClient(BaseModel):
     username: str
     message: str

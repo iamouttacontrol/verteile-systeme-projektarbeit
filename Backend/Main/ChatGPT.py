@@ -1,9 +1,6 @@
 import json
 import openai
 import os
-import hashlib
-import time
-from datetime import datetime
 from dotenv import load_dotenv
 from fuzzywuzzy import fuzz
 
@@ -15,11 +12,7 @@ from fuzzywuzzy import fuzz
 
 
 load_dotenv()
-api_key = os.getenv('OPENAI_API_KEY')
-openai.api_key = api_key
-
-save_path = r"C:\Users\tyilm\Desktop\verteile-systeme-projektarbeit\ChatGPT\messages"
-messagesPath= r"C:\Users\tyilm\Desktop\verteile-systeme-projektarbeit\ChatGPT\messages\example1.json"
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 
 def listenToMessages(chatHistory):

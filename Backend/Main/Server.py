@@ -4,15 +4,16 @@ from autobahn.twisted.websocket import WebSocketServerFactory, \
     WebSocketServerProtocol
 
 from Message import MessageFromClient, MessageToClient
-#from Translator import translate_text
-#from ChatGPT import listenToMessages
-#from Sentiment import sentiment_analysis
+from Translator import translate_text
+from ChatGPT import listenToMessages
+from Sentiment import sentiment_analysis
 
 
 class ChatServerProtocol(WebSocketServerProtocol):
     chatHistory = []
 
     def onConnect(self, request):
+
         print(f"Client verbunden: {request.peer}")
 
     def onOpen(self):
@@ -74,13 +75,15 @@ class ChatServerFactory(WebSocketServerFactory):
 
     def broadcast(self, message, sender):
         for client in self.clients:
-            client.sendMessage(message.encode('utf8'))
+            message.language = client.language
+            message = translate_text(message)
+            client.sendMessage(message)
 
 
 if __name__ == "__main__":
     chatServer = ChatServerProtocol()
     
-    Message = b'{"username":"test","message":"test message","timestamp":"14:42:21","language":"de"}'
+    Message = b'{"username":"test","message":"alexa, mir gehts nicht gut","timestamp":"14:42:21","language":"de"}'
     chatServer.onMessage(Message, False)
     '''
     #Message 2
@@ -97,7 +100,8 @@ if __name__ == "__main__":
                        timestamp="11:24:39", sentiment=0.0)
     chatServer.onMessage(message3, False)
     '''
-    
+
+
     factory = ChatServerFactory("ws://localhost:9000")
     factory.protocol = ChatServerProtocol
     reactor.listenTCP(9000, factory)
