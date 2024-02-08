@@ -122,5 +122,3 @@ def save_response_as_json(message):
     print(f"Nachricht gespeichert in: {full_path}")
 
 
-
-listenToMessages()

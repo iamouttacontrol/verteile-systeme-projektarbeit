@@ -17,16 +17,19 @@ def translate_text(json):
 
 def translate_and_convert(json):
     response = translate_text(json)
-    standard_format = {"name" : json["name"], "message" : response["translatedText"], "language" : json["language"], "timestamp" : json["timestamp"]}
+    standard_format = {"name" : json["name"], "message" : response["translatedText"], "language" : json["language"],
+                       "timestamp" : json["timestamp"], "sentiment": json["sentiment"]}
     return standard_format
 
 
 text = {
-  "name" : "Philip",
-  "message" : "Hallo, Ich bin ein Bär",
-  "language" : "EN",
-  "timestamp" : 0
+    "name" : "Philip",
+    "message" : "Hallo, Ich bin ein Bär",
+    "language" : "EN",
+    "timestamp" : 123,
+    "sentiment" : 0.1412
 }
 
+#print(type(text))
 
-print(translate_and_convert(text))
+#print(translate_and_convert(text))
