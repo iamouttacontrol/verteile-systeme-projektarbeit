@@ -30,7 +30,7 @@ function buttonSendAction() {
     socket.send(data);
 }
 
-function test() {
+function establishConnection() {
 
     // Connection opened
     socket.addEventListener("open", (event) => {
