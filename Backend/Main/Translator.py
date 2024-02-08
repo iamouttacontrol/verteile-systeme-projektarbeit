@@ -18,16 +18,6 @@ def translate_text(message: MessageFromClient | MessageToClient):
     message.message = result["translatedText"]
     return message
 
-
-
-
-#def translate_and_convert(message: Message):
-#    response = translate_text(message)
-#    standard_format = {"name" : message.name, "message" : response["translatedText"], "language" : message.language,
-#                       "timestamp" : message.timestamp, "sentiment": message.sentiment}
-#    message.message = response["translatedText"]
-#    return standard_format
-
 #message = MessageToClient(username="Philip", message="Hallo, Ich bin ein Bär", language="EN",
 #                          timestamp="11:24:39", sentiment=0.0)
 

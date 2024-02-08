@@ -19,8 +19,8 @@ def sentiment_analysis(message: MessageFromClient):
 	message["sentiment"] = response.json()["score"]
 	return MessageToClient.model_validate(message)
 
-message = b'{"username":"test","message":"test message","timestamp":"14:42:21","language":"de"}'
-message = message.decode('utf8')
-message = json.loads(message)
-message = MessageFromClient.model_validate(message)
-print(sentiment_analysis(message))
+#message = b'{"username":"test","message":"test message","timestamp":"14:42:21","language":"de"}'
+#message = message.decode('utf8')
+#message = json.loads(message)
+#message = MessageFromClient.model_validate(message)
+#print(sentiment_analysis(message))
