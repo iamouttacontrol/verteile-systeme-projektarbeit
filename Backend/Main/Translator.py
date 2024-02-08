@@ -21,7 +21,7 @@ def translate_text(message: MessageFromClient | MessageToClient):
     return message
 
 
-message = MessageFromClient(username='Matthias', message='Hallo wie gehts?\n', language='es', timestamp='16:57:19')
+#message = MessageFromClient(username='Matthias', message='Hallo wie gehts?\n', language='es', timestamp='16:57:19')
 
-print(type(message))
-print(translate_text(message))
+#print(type(message))
+#print(translate_text(message))

@@ -1,7 +1,7 @@
 let savedNickname;
 let chosenlanguage = "de";
 
-const socket = new WebSocket("wss://virtualmeet.social:9000");
+const socket = new WebSocket("ws://localhost:9000");
 
 
 function buttonSendAction() {
@@ -18,15 +18,15 @@ function buttonSendAction() {
 
         const now = new Date();
 
-        const aktuelleStunde = now.getHours();
-        const aktuelleMinute = now.getMinutes();
-        const aktuelleSekunde = now.getSeconds();
+        var hour = now.getHours().toString().padStart(2, '0');
+        var minute = now.getMinutes().toString().padStart(2, '0');
+        var second = now.getSeconds().toString().padStart(2, '0');
 
-        let timestamp = `${aktuelleStunde}:${aktuelleMinute}:${aktuelleSekunde}`;
+        let timestamp = `${hour}:${minute}:${second}`;
 
         // JSON String bilden
         const chatnachricht = {
-            nickname: savedNickname,
+            username: savedNickname,
             message: eingabeText,
             timestamp: timestamp,
             language: chosenlanguage
@@ -34,7 +34,7 @@ function buttonSendAction() {
         let data = JSON.stringify(chatnachricht);
 
 
-        document.getElementById("chatTextArea").innerHTML = data;
+        //document.getElementById("chatTextArea").innerHTML = data;
         socket.send(data);
     }
 }
@@ -46,7 +46,6 @@ function establishConnection() {
         //var data = JSON.stringify({"lang":"data"});
         data = "test"
         console.log(data);
-        socket.send(JSON.stringify(data));
     });
 
 

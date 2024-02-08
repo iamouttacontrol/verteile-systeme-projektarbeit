@@ -99,7 +99,7 @@ if __name__ == "__main__":
     chatServer.onMessage(Message, False)
     '''
     
-    connect_message = b'{"language":"de"}'
+    #connect_message = b'{"language":"de"}'
     
     #chatServer.onConnect(c)
     factory = ChatServerFactory("ws://localhost:9000")
