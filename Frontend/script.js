@@ -48,7 +48,7 @@ function test() {
         const empfangeneNachricht = JSON.parse(event.data);
 
         // Formatierung der Nachricht: "nickname: nachricht (timestamp)"
-        const formatierteNachricht = `(${empfangeneNachricht.timestamp}) ${empfangeneNachricht.nickname}: ${empfangeneNachricht.message}`;
+        const formatierteNachricht = `(${empfangeneNachricht.timestamp}) ${empfangeneNachricht.username}: ${empfangeneNachricht.message}`;
 
         // Hinzufügen der formatierten Nachricht zum Chatfenster, mit Zeilenumbruch für jede neue Nachricht
         chatTextArea.value += (chatTextArea.value ? "\n" : "") + formatierteNachricht;

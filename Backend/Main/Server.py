@@ -38,7 +38,7 @@ class ChatServerProtocol(WebSocketServerProtocol):
                 if message.language != "en":
                     message.language = "en"
 
-                '''
+
                 # print(f"Nachricht empfangen: {message}")
                 message = translate_text(message)
                 # print(f"Nachricht übersetzt: {message}")
@@ -51,17 +51,13 @@ class ChatServerProtocol(WebSocketServerProtocol):
                     # print("History > 5")
                     removed_message = self.chatHistory.pop(0)
                     # print(f"Removed Message {removed_message}")
-                else:
-                    # print("History =< 6")
-                    pass
-
-                listenToMessages(self.chatHistory)
-
-                
-                
-                '''
                 self.factory.broadcast(message, self)
-                
+
+                chat_response = listenToMessages(self.chatHistory)
+                if chat_response != message:
+                    self.factory.broadcast(chat_response, self)
+
+
         except Exception:
             print(traceback.format_exc())
             raise ConnectionDeny(400, "wrong parameter in request")
@@ -89,8 +85,9 @@ class ChatServerFactory(WebSocketServerFactory):
     def broadcast(self, message, sender):
         for client in self.clients:
             message.language = client.language
-            print(client.language)
-            #message = translate_text(message)
+            print(message)
+            print(type(message.language))
+            message = translate_text(message)
             client.sendMessage(json.dumps(message.__dict__).encode('utf-8'))
 
 
