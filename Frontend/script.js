@@ -34,7 +34,7 @@ function test() {
 
     // Connection opened
     socket.addEventListener("open", (event) => {
-        //var data = JSON.stringify({"lang":"data"});
+        var data = JSON.stringify({"username":"test","message":"test message","timestamp":"14:42:21","language":chosenlanguage});
         //data = "test"
         //console.log(data);
         //socket.send(data);
