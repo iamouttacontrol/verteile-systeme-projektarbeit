@@ -23,11 +23,9 @@ messagesPath= r"C:\Users\tyilm\Desktop\verteile-systeme-projektarbeit\ChatGPT\me
 
 
 def listenToMessages(chatHistory):
-    with open(messagesPath, 'r') as openfile:
-        json_object = json.load(openfile)
+    message = chatHistory[len(chatHistory)-1]
 
-
-    message_str = json_object['message'].lower()
+    message_str = message.message
     print("Message: "+message_str)  # Zeigt die Alexa-Nachricht an
 
     # Berechnet die Ähnlichkeit zwischen der Nachricht und "alexa"
@@ -42,7 +40,7 @@ def listenToMessages(chatHistory):
 
 
 def create_chatbot(chatHistory):
-    messages = chatHistory
+    messages = []
     sentiment = checkSentiment(chatHistory)
     #0-1 : 1 ist ein kreativer
     #sentiment=-1 -> ist sehr negativ gelaunt -> eher konsistenterer antworten
@@ -56,39 +54,39 @@ def create_chatbot(chatHistory):
 
     print("Temperatur ist: "+str(temperature))
     print("Ich bin ready...!")
-    user_input = ""
-    chat=[]
-    while user_input != "quit":
-        user_input = input("Enter your message or 'quit' to exit: ")
-        if user_input == "quit":
-            break
 
-        messages.append({"role": "user", "content": user_input} )
-        messages.append({"role": "system",
-                         "content": "Du bist ein Teilnehmer in einem Chatraum. Deine Aufgabe ist es mit anderen Nutzern eine Konversation zu führen. "
-                                    "Deine aktuelle Stimmung wird auf einer Skala von -1 (sehr negativ)"
-                                    " bis 1 (sehr positiv) bewertet und liegt aktuell bei: "+ str(sentiment)})
-        response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=messages,
-            temperature=temperature,
-            max_tokens=1000,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0,
+    for message in chatHistory:
+        messages.append({"role": "user", "content": f"{message.message}"})
 
-        )
-        #print(response)
-        response_message = response.choices[0].message.content
-        messages.append({"role": "assistant", "content": response_message})
-        print("\n" + response_message + "\n")
 
-        return response_message
+    messages.append({"role": "system",
+                     "content": "Du bist ein Teilnehmer in einem Chatraum. Deine Aufgabe ist es mit anderen Nutzern "
+                                "eine Konversation zu führen."
+                                "Die vorherigen Nachrichten sind die letzten "
+                                "aus dem Chatverlauf (bis zu 5 Nachrichten)."
+                                "Deine aktuelle Stimmung wird auf einer Skala von -1 (sehr negativ)"
+                                " bis 1 (sehr positiv) bewertet und liegt aktuell bei: "+ str(sentiment)})
+    response = openai.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=messages,
+        temperature=temperature,
+        max_tokens=1000,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0,
+
+    )
+    #print(response)
+    response_message = response.choices[0].message.content
+    messages.append({"role": "assistant", "content": response_message})
+    print("\n" + response_message + "\n")
+
+    return response_message
 
 def checkSentiment(chatHistory):
     sentiment_value = 0
-    for json_object in chatHistory:
-        sentiment_value += json_object['sentiment']
+    for message in chatHistory:
+        sentiment_value += message.sentiment
 
     sentiment_value = sentiment_value / len(chatHistory)
     print("Backend: " + str(sentiment_value))

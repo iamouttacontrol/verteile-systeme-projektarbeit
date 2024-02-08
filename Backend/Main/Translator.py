@@ -25,8 +25,8 @@ def translate_text(message: Message):
 #    message.message = response["translatedText"]
 #    return standard_format
 
-message = Message(name="Philip", message="Hallo, Ich bin ein Bär", language="EN", timestamp="11:24:39", sentiment=0.0)
+#message = Message(name="Philip", message="Hallo, Ich bin ein Bär", language="EN", timestamp="11:24:39", sentiment=0.0)
 
 #print(type(message))
 
-print(translate_text(message))
+#print(translate_text(message))

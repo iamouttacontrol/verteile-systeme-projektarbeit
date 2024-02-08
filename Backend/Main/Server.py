@@ -12,7 +12,7 @@ from Sentiment import sentiment_analysis
 
 
 class ChatServerProtocol(WebSocketServerProtocol):
-    chatHistory = [dict]
+    chatHistory = []
 
     def onConnect(self, request):
         print(f"Client verbunden: {request.peer}")
@@ -23,22 +23,25 @@ class ChatServerProtocol(WebSocketServerProtocol):
 
     def onMessage(self, message: Message, isBinary):
         if not isBinary:
-            print(f"Nachricht empfangen: {message}")
-            translated_message = translate_text(message)
-            print(f"Nachricht übersetzt: {translated_message}")
-            sentiment = sentiment_analysis(translated_message)
-            sentiment_message = translated_message
-            sentiment_message["sentiment"] = sentiment["score"]
-            print(f"Nachricht mit Sentiment: {sentiment_message}")
-            self.chatHistory.append(sentiment_message)
-            print(self.chatHistory)
+            if message.language != "EN":
+                message.language = "EN"
+            #print(f"Nachricht empfangen: {message}")
+            message = translate_text(message)
+            #print(f"Nachricht übersetzt: {message}")
+            message = sentiment_analysis(message)
+            #print(f"Nachricht mit Sentiment: {message}")
+            self.chatHistory.append(message)
+            #print(self.chatHistory)
+            #print(self.chatHistory[len(self.chatHistory)-1])
             if len(self.chatHistory)>5:
-                print("History > 5")
+                #print("History > 5")
                 removed_message = self.chatHistory.pop(0)
-                print(f"Removed Message {removed_message}")
+                #print(f"Removed Message {removed_message}")
             else:
-                print("History =< 6")
-            print(self.chatHistory)
+                #print("History =< 6")
+                pass
+
+            listenToMessages(self.chatHistory)
 
             #self.factory.broadcast(message, self)
 
@@ -69,14 +72,20 @@ class ChatServerFactory(WebSocketServerFactory):
 
 if __name__ == "__main__":
     chatServer = ChatServerProtocol()
-    #Message 1
-    message = Message(name="Matthias", message="Hallo, wie gehts?", language="EN", timestamp="11:24:39", sentiment=0.0)
-
-    chatServer.onMessage(message, False)
 
     #Message 2
-    message.name = "Tolga"
-    chatServer.onMessage(message, False)
+    message1 = Message(name="Philip", message="Hi wie gehts?", language="EN", timestamp="11:24:39", sentiment=0.0)
+    chatServer.onMessage(message1, False)
+
+
+    #Message 2
+    message2 = Message(name="Matthias", message="Mir gehts super und dir?", language="EN", timestamp="11:24:39", sentiment=0.0)
+    chatServer.onMessage(message2, False)
+
+    #Message 3
+    message3 = Message(name="Tolga", message="alexa, wie ist die Stimmung im Chat?", language="EN",
+                       timestamp="11:24:39", sentiment=0.0)
+    chatServer.onMessage(message3, False)
 
     factory = ChatServerFactory("ws://localhost:9000")
     factory.protocol = ChatServerProtocol

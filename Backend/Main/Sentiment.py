@@ -18,6 +18,6 @@ def sentiment_analysis(message: Message):
 	message.sentiment = response.json()["score"]
 	return message
 
-message = Message(name="Philip", message="Hello I am a bear", language="EN", timestamp="11:24:39", sentiment=0.0)
+#message = Message(name="Philip", message="I hate you!", language="EN", timestamp="11:24:39", sentiment=0.0)
 
-print(sentiment_analysis(message))
+#print(sentiment_analysis(message))
