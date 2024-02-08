@@ -24,17 +24,16 @@ class ChatServerProtocol(WebSocketServerProtocol):
     def onMessage(self, payload, isBinary):
         if not isBinary:
             message = payload.decode('utf8')
-            print(type(message))
             print(f"Nachricht empfangen: {message}")
             message = json.loads(message)
-            print(type(message))
             #message = MessageFromClient.model_validate(message["username"], message["message"], message["language"], message["timestamp"])
             message = MessageFromClient.model_validate(message)
-            print(type(message))
             
             
             if message.language != "EN":
                 message.language = "EN"
+                
+
             #print(f"Nachricht empfangen: {message}")
             message = translate_text(message)
             #print(f"Nachricht übersetzt: {message}")
