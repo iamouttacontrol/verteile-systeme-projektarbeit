@@ -1,11 +1,12 @@
 import json
+from datetime import datetime
+
 import openai
 import os
-import hashlib
-import time
-from datetime import datetime
 from dotenv import load_dotenv
 from fuzzywuzzy import fuzz
+
+from Backend.Main import MessageToClient
 
 #todo: api_key in eine .env Datei packen und sicherer setzen + in gitIgnore packen
 #todo: jede nachricht enthält eine eigene JSON? -> macht es Sinn, dass wir in der Antwort die letzten 2-3 Nachrichten mitgeben?
@@ -15,11 +16,7 @@ from fuzzywuzzy import fuzz
 
 
 load_dotenv()
-api_key = os.getenv('OPENAI_API_KEY')
-openai.api_key = api_key
-
-save_path = r"C:\Users\tyilm\Desktop\verteile-systeme-projektarbeit\ChatGPT\messages"
-messagesPath= r"C:\Users\tyilm\Desktop\verteile-systeme-projektarbeit\ChatGPT\messages\example1.json"
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 
 def listenToMessages(chatHistory):
@@ -37,6 +34,7 @@ def listenToMessages(chatHistory):
         return create_chatbot(chatHistory)
     else:
         print("Bot soll nicht antworten")
+        return message
 
 
 def create_chatbot(chatHistory):
@@ -49,7 +47,9 @@ def create_chatbot(chatHistory):
 
     min_temp = 0.2
     max_temp = 0.8
-
+    # auszug aus der doku
+    # Higher values like 0.8 will make the output more random, while lower values like 0.2
+    # will make it more focused and deterministic.
     temperature = 0.5 * (sentiment + 1) * (max_temp - min_temp) + min_temp
 
     print("Temperatur ist: "+str(temperature))
@@ -60,28 +60,33 @@ def create_chatbot(chatHistory):
 
 
     messages.append({"role": "system",
-                     "content": "Du bist ein Teilnehmer in einem Chatraum. Deine Aufgabe ist es mit anderen Nutzern "
-                                "eine Konversation zu führen."
-                                "Die vorherigen Nachrichten sind die letzten "
-                                "aus dem Chatverlauf (bis zu 5 Nachrichten)."
-                                "Deine aktuelle Stimmung wird auf einer Skala von -1 (sehr negativ)"
-                                " bis 1 (sehr positiv) bewertet und liegt aktuell bei: "+ str(sentiment)})
+                    "content": "Du bist ein intelligenter Assistent in einem Chatraum."
+                                " Deine Aufgabe ist es, mit relevanten und hilfreichen Antworten"
+                                " zu reagieren. Zusätzlich hast du Zugriff auf die letzten bis zu 5 Nachrichten aus"
+                                " dem Chatverlauf. Diese Nachrichten enthalten jeweils den Nickname des Teilnehmers"
+                                " und die Nachricht selbst. Deine Antworten sollten sowohl den Kontext dieser "
+                                "Nachrichten berücksichtigen. Deine Stimmung wird algorithmisch auf einer Skala von -1 "
+                                "(sehr negativ) bis 1 (sehr positiv) erfasst und soll in deinen Antworten"
+                                " widergespiegelt werden. Deine aktuelle Stimmung liegt bei: "+ str(sentiment)
+                     }
+
+    )
     response = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4-0125-preview",
         messages=messages,
         temperature=temperature,
         max_tokens=1000,
-        top_p=1,
         frequency_penalty=0,
         presence_penalty=0,
-
     )
     #print(response)
     response_message = response.choices[0].message.content
     messages.append({"role": "assistant", "content": response_message})
     print("\n" + response_message + "\n")
 
-    return response_message
+    date_time = datetime.now()
+    str_date_time = date_time.strftime("%H:%M:%S")
+    return MessageToClient(username="Alexa", message=response_message, language="EN", timestamp=str_date_time, sentiment=sentiment)
 
 def checkSentiment(chatHistory):
     sentiment_value = 0

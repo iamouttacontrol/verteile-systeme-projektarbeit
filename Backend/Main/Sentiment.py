@@ -1,13 +1,14 @@
-import os
+import json
 import requests
 from dotenv import load_dotenv
+from Backend.Main import MessageFromClient, MessageToClient
+import os
 
-from Message import Message
 
 load_dotenv()
 
 
-def sentiment_analysis(message: Message):
+def sentiment_analysis(message: MessageFromClient):
 	url = os.environ.get("URL")
 	headers = {
 		"X-RapidAPI-Key": os.environ.get("XKEY"),
@@ -15,9 +16,12 @@ def sentiment_analysis(message: Message):
 	}
 	querystring = {"text": message.message}
 	response = requests.get(url, headers=headers, params=querystring)
-	message.sentiment = response.json()["score"]
-	return message
+	message = message.__dict__
+	message["sentiment"] = response.json()["score"]
+	return MessageToClient.model_validate(message)
 
-#message = Message(name="Philip", message="I hate you!", language="EN", timestamp="11:24:39", sentiment=0.0)
-
+#message = b'{"username":"test","message":"test message","timestamp":"14:42:21","language":"de"}'
+#message = message.decode('utf8')
+#message = json.loads(message)
+#message = MessageFromClient.model_validate(message)
 #print(sentiment_analysis(message))

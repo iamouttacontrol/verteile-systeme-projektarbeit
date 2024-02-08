@@ -1,1 +1,1 @@
-from Message import Message
+from Backend.Main.Message import *

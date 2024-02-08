@@ -1,26 +1,35 @@
 import unittest
-import json
 
-from Backend.Main import Message
+from Backend.Main import MessageFromClient, MessageToClient
 from Backend.Main.Translator import translate_text
 
 
 class TranslatorTest(unittest.TestCase):
     def test_translate(self):
-        message = Message(name="Philip", message="Hallo, Ich bin ein Bär", language="EN", timestamp="11:24:39", sentiment=0.0)
-        self.assertEqual(translate_text(message)["detectedSourceLanguage"], "de")
-        self.assertEqual(translate_text(message)["translatedText"], "Hello, I am a bear")
+        #MessageFromClient as Input
+        message_given = MessageFromClient(username="Matthias", message="Hallo ich bin ein Bär",
+                                          language="EN", timestamp="15:43:33")
+        message_expected = MessageFromClient(username="Matthias", message="Hello, I am a bear",
+                                           language="EN", timestamp="15:43:33", sentiment=0.85434434)
+        self.assertEqual(translate_text(message_given), message_expected)
 
-        message.language = "ES"
-        self.assertEqual(translate_text(message)["detectedSourceLanguage"], "de")
-        self.assertEqual(translate_text(message)["translatedText"], "hola soy un oso")
+        message_given.language = "ES"
+        message_expected.language = "ES"
+        message_expected.message = "hola soy un oso"
+        self.assertEqual(translate_text(message_given), message_expected)
 
- #   def test_translateAndConvert(self):
- #       text = {"name": "Philip", "message": "Hallo, Ich bin ein Bär", "language": "EN", "timestamp": 0}
- #       self.assertEqual(translate_and_convert(text)["name"],text["name"])
- #       self.assertEqual(translate_and_convert(text)["language"],text["language"])
- #       self.assertEqual(translate_and_convert(text)["timestamp"],text["timestamp"])
- #       self.assertEqual(translate_and_convert(text)["message"], "Hello, I am a bear")
+        #MessageToClient as Input
+        message_given = MessageToClient(username="Matthias", message="Hallo ich bin ein Bär",
+                                           language="EN", timestamp="15:43:33", sentiment=0.85434434)
+        message_expected = MessageToClient(username="Matthias", message="Hello, I am a bear",
+                                           language="EN", timestamp="15:43:33", sentiment=0.85434434)
+        self.assertEqual(translate_text(message_given), message_expected)
+
+        message_given.language = "ES"
+        message_expected.language = "ES"
+        message_expected.message = "hola soy un oso"
+        self.assertEqual(translate_text(message_given), message_expected)
+
 
 if __name__ == '__main__':
     unittest.main()
