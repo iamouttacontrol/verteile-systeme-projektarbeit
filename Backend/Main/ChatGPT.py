@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 from fuzzywuzzy import fuzz
 
-from Backend.Main import MessageToClient
+from Message import MessageToClient
 
 #todo: api_key in eine .env Datei packen und sicherer setzen + in gitIgnore packen
 #todo: jede nachricht enthält eine eigene JSON? -> macht es Sinn, dass wir in der Antwort die letzten 2-3 Nachrichten mitgeben?
