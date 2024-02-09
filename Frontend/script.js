@@ -3,20 +3,6 @@ let chosenlanguage = "de";
 
 let socket;
 
-async function helperFunc() {
-    return new Promise(function(resolve, reject) {
-        resolve('Daten geladen!');
-    });
-}
-
-async function getOnlineUser() {
-    console.log('Start');
-    setInterval(async function() {
-        const data = await fetchData();
-        console.log(data);
-    }, 5000);
-}
-
 function buttonSendAction() {
     const eingabeFenster = document.getElementById("chatTextEingabe");
 

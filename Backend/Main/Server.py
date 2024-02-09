@@ -5,7 +5,6 @@ from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerPr
 from autobahn.websocket.types import ConnectionDeny
 from Message import MessageFromClient, MessageToClient
 from http import HTTPStatus
-from pydantic import BaseModel
 #from Translator import translate_text
 #from ChatGPT import listenToMessages
 #from Sentiment import sentiment_analysis
@@ -27,47 +26,53 @@ class ChatServerProtocol(WebSocketServerProtocol):
             print("empty message ", payload, " empty rest")
             print(type(payload))
             if not isBinary:
-                message = payload.decode('utf8')
-                print(type(message))
-                print(f"Nachricht empfangen: {message}")
-                message = json.loads(message)
-                # message = MessageFromClient.model_validate(message["username"], message["message"], message["language"], message["timestamp"])
-                message = MessageFromClient.model_validate(message)
+                try:
+                    message = payload.decode('utf8')
+                    print(type(message))
+                    print(f"Nachricht empfangen: {message}")
+                    message = json.loads(message)
+                    # message = MessageFromClient.model_validate(message["username"], message["message"], message["language"], message["timestamp"])
                 
-                if (self.language is None or self.username is None):
-                    self.language = message.language
-                    self.username = message.username
-                    print("set user language to", self.language)
-                    print("linked user with username", self.username)
-                    self.factory.sendCurrentUsers()
-                    
+                    message = MessageFromClient.model_validate(message)
+               
                     
                 
+                    if (self.language is None or self.username is None):
+                        self.language = message.language
+                        self.username = message.username
+                        print("set user language to", self.language)
+                        print("linked user with username", self.username)
+                        self.factory.sendCurrentUsers()
+                        
+                        
+                    
 
-                if message.language != "en":
-                    message.language = "en"
-                   
-                ''' 
-                # print(f"Nachricht empfangen: {message}")
-                message = translate_text(message)
-                # print(f"Nachricht übersetzt: {message}")
-                message = sentiment_analysis(message)
-                # print(f"Nachricht mit Sentiment: {message}")
-                self.chatHistory.append(message)
-                # print(self.chatHistory)
-                # print(self.chatHistory[len(self.chatHistory)-1])
-                if len(self.chatHistory) > 5:
-                    # print("History > 5")
-                    removed_message = self.chatHistory.pop(0)
-                    # print(f"Removed Message {removed_message}")
-                '''
-                self.factory.broadcast(message, self)
+                    if message.language != "en":
+                        message.language = "en"
+                    
+                    ''' 
+                    # print(f"Nachricht empfangen: {message}")
+                    message = translate_text(message)
+                    # print(f"Nachricht übersetzt: {message}")
+                    message = sentiment_analysis(message)
+                    # print(f"Nachricht mit Sentiment: {message}")
+                    self.chatHistory.append(message)
+                    # print(self.chatHistory)
+                    # print(self.chatHistory[len(self.chatHistory)-1])
+                    if len(self.chatHistory) > 5:
+                        # print("History > 5")
+                        removed_message = self.chatHistory.pop(0)
+                        # print(f"Removed Message {removed_message}")
+                    '''
+                    self.factory.broadcast(message, self)
 
-                '''
-                chat_response = listenToMessages(self.chatHistory)
-                if chat_response != message:
-                    self.factory.broadcast(chat_response, self)
-                '''
+                    '''
+                    chat_response = listenToMessages(self.chatHistory)
+                    if chat_response != message:
+                        self.factory.broadcast(chat_response, self)
+                    '''
+                except Exception as e:
+                    print(traceback.format_exc())
    
         except Exception:
             print(traceback.format_exc())
@@ -88,7 +93,8 @@ class ChatServerFactory(WebSocketServerFactory):
     def getUsernameAndLang(self):
         client_list = []
         for client in self.clients:
-            client_list.append({"username":client.username, "language":client.language})
+            if not (client.username is None or client.language is None):
+                client_list.append({"username":client.username, "language":client.language})
         return client_list
         
     def sendCurrentUsers(self):
@@ -101,7 +107,7 @@ class ChatServerFactory(WebSocketServerFactory):
                     message = json.dumps({"clientsOnline":client_list, "numOfClients":number_of_clients})
                     client.sendMessage(message.encode('utf-8'))
             except:
-                pass
+                print(traceback.format_exc())
         
     def register(self, client):
         if client not in self.clients:
