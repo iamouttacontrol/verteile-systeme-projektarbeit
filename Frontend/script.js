@@ -1,31 +1,14 @@
 let savedNickname;
 let chosenlanguage = "de";
-
 let socket;
-
-async function helperFunc() {
-    return new Promise(function(resolve, reject) {
-        resolve('Daten geladen!');
-    });
-}
-
-async function getOnlineUser() {
-    console.log('Start');
-    setInterval(async function() {
-        const data = await fetchData();
-        console.log(data);
-    }, 5000);
-}
 
 function buttonSendAction() {
     const eingabeFenster = document.getElementById("chatTextEingabe");
-
     let eingabeText = eingabeFenster.value;
 
     if(eingabeText === '' || savedNickname ==='') {
         alert("Bitte Nachricht eingeben!")
     }else {
-
         // Entfernen Sie jede direkte Anzeige im Chatfenster hier.
         eingabeFenster.value = ""; // Eingabefeld leeren
 
@@ -38,14 +21,13 @@ function buttonSendAction() {
         let timestamp = `${hour}:${minute}:${second}`;
 
         // JSON String bilden
-        const chatnachricht = {
+        const chatMessageToServer = {
             username: savedNickname,
             message: eingabeText,
             timestamp: timestamp,
             language: chosenlanguage
         };
-        let data = JSON.stringify(chatnachricht);
-
+        let data = JSON.stringify(chatMessageToServer);
 
         //document.getElementById("chatTextArea").innerHTML = data;
         socket.send(data);
@@ -81,7 +63,7 @@ function establishConnection() {
         else {
             const chatTextArea = document.getElementById("chatTextArea");
             // Formatierung der Nachricht: "nickname: nachricht (timestamp)"
-            const formatMessage = `(${receivedMessage.timestamp}) ${receivedMessage.username}: ${receivedMessage.message}`;
+            const formatMessage = `(${receivedMessage.timestamp}) ${receivedMessage.username}: ${receivedMessage.message} ${receivedMessage.sentiment}`;
 
             // Hinzufügen der formatierten Nachricht zum Chatfenster, mit Zeilenumbruch für jede neue Nachricht
             chatTextArea.value += (chatTextArea.value ? "\n" : "") + formatMessage;
@@ -103,13 +85,15 @@ function buttonNicknameSave() {
 }
 
 /**
- * Mit der Methode wird die Sprache festgelegt auf der man die Nachrichten übersetzt haben will.
+ * Mit der Methode wird die Sprache festgelegt, auf der man die Nachrichten übersetzt haben will.
  */
 function selectLanguage() {
     switch (document.getElementById("dropdownValue").value){
         case "1": chosenlanguage ="de"; break;
         case "2": chosenlanguage ="en"; break;
-        case "3": chosenlanguage ="es"; break
+        case "3": chosenlanguage ="fr"; break
+        case "4": chosenlanguage = "it"; break;
+        case "5": chosenlanguage = "es"; break;
     }
 }
 
@@ -132,9 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
   var dropbtn = document.querySelector('.dropdownBtn');
   var hiddenInput = document.getElementById('dropdownValue');
 
-  // Initialisiere das Dropdown mit einem Standardwert
-  setDropdownValue(dropdownLinks[0].getAttribute('data-value'), dropdownLinks[0].textContent); // Setzt Option 2 als Standard
-
   dropdownLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -148,8 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function setDropdownValue(value, text) {
     hiddenInput.value = value;
     dropbtn.textContent = text;
-
-    //dropbtn.focus(); // Optional: Setze den Fokus auf den Button
+    document.getElementById("chosenLanguageFlag").src = "img/Flag_of_Germany.png";
   }
 });
 
