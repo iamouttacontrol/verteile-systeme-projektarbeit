@@ -1,14 +1,12 @@
 import json
 import traceback
-from twisted.internet import reactor, task
+from twisted.internet import reactor
 from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
-from autobahn.websocket.types import ConnectionDeny
 from Message import MessageFromClient, MessageToClient
 from http import HTTPStatus
-from pydantic import BaseModel
-#from Translator import translate_text
-#from ChatGPT import listenToMessages
-#from Sentiment import sentiment_analysis
+from Translator import translate_text
+from ChatGPT import listenToMessages
+from Sentiment import sentiment_analysis
 
 
 class ChatServerProtocol(WebSocketServerProtocol):
@@ -24,56 +22,71 @@ class ChatServerProtocol(WebSocketServerProtocol):
 
     def onMessage(self, payload, isBinary):
         try:
-            print("empty message ", payload, " empty rest")
-            print(type(payload))
             if not isBinary:
-                message = payload.decode('utf8')
-                print(type(message))
-                print(f"Nachricht empfangen: {message}")
-                message = json.loads(message)
-                # message = MessageFromClient.model_validate(message["username"], message["message"], message["language"], message["timestamp"])
-                message = MessageFromClient.model_validate(message)
-                
-                if (self.language is None or self.username is None):
-                    self.language = message.language
-                    self.username = message.username
-                    print("set user language to", self.language)
-                    print("linked user with username", self.username)
-                    self.factory.sendCurrentUsers()
-                    
-                    
-                
+                try:
+                    message = payload.decode("utf8")
+                    message = json.loads(message)
+                    print(f"message received: {message}")
+                    message = MessageFromClient.model_validate(message)
+                    message_copy = MessageFromClient.model_validate(message.__dict__)
 
-                if message.language != "en":
-                    message.language = "en"
-                   
-                ''' 
-                # print(f"Nachricht empfangen: {message}")
-                message = translate_text(message)
-                # print(f"Nachricht übersetzt: {message}")
-                message = sentiment_analysis(message)
-                # print(f"Nachricht mit Sentiment: {message}")
-                self.chatHistory.append(message)
-                # print(self.chatHistory)
-                # print(self.chatHistory[len(self.chatHistory)-1])
-                if len(self.chatHistory) > 5:
-                    # print("History > 5")
-                    removed_message = self.chatHistory.pop(0)
-                    # print(f"Removed Message {removed_message}")
-                '''
-                self.factory.broadcast(message, self)
+                    if self.language is None or self.username is None:
+                        self.language = message.language
+                        self.username = message.username
+                        print("set user language to", self.language)
+                        print("linked user with username", self.username)
+                        self.factory.sendCurrentUsers()
 
-                '''
-                chat_response = listenToMessages(self.chatHistory)
-                if chat_response != message:
-                    self.factory.broadcast(chat_response, self)
-                '''
-   
+                    if message_copy.language != "en":
+                        message_copy.language = "en"
+
+                    message_copy = translate_text(message_copy)
+                    print(
+                        f"translated message for sentiment to: {message_copy.message}"
+                    )
+                    message_copy = sentiment_analysis(message_copy)
+                    print(f"sentiment generated: {message_copy.sentiment}")
+
+                    message = MessageToClient(
+                        username=message.username,
+                        message=message.message,
+                        language=message.language,
+                        timestamp=message.timestamp,
+                        sentiment=message_copy.sentiment,
+                    )
+                    self.chatHistory.append(message)
+                    print(f"Message '{message.message}' added to chat history")
+
+                    while len(self.chatHistory) > 5:
+                        message_old = self.chatHistory.pop(0)
+                        print(
+                            f"old message '{message_old.message} removed from chat history"
+                        )
+
+                    self.factory.broadcast(message, self)
+                    print(f"Message '{message.message}' broadcasted")
+
+                    chat_response = listenToMessages(self.chatHistory)
+                    print(chat_response)
+                    if chat_response is not None:
+                        self.chatHistory.append(chat_response)
+                        print(
+                            f"Message '{chat_response.message}' added to chat history"
+                        )
+                        self.factory.broadcast(chat_response, self)
+                        print(f"Message '{chat_response.message}' broadcasted")
+
+                        while len(self.chatHistory) > 5:
+                            message_old = self.chatHistory.pop(0)
+                            print(
+                                f"old message '{message_old.message} removed from chat history"
+                            )
+                except:
+                    print(traceback.format_exc())
+
         except Exception:
             print(traceback.format_exc())
-            #raise ConnectionDeny(400, "wrong parameter in request")
             raise HTTPStatus(status=400, reason="wrong parameter in request")
-        
 
     def onClose(self, wasClean, code, reason):
         print(f"WebSocket-Verbindung geschlossen: {reason}")
@@ -83,26 +96,34 @@ class ChatServerProtocol(WebSocketServerProtocol):
 class ChatServerFactory(WebSocketServerFactory):
     def __init__(self, url):
         super().__init__(url)
-        self.clients = []    
-        
+        self.clients = []
+
     def getUsernameAndLang(self):
         client_list = []
         for client in self.clients:
-            client_list.append({"username":client.username, "language":client.language})
+            if not (client.username is None or client.language is None):
+                client_list.append(
+                    {"username": client.username, "language": client.language}
+                )
         return client_list
-        
+
     def sendCurrentUsers(self):
         number_of_clients = len(self.clients)
         client_list = self.getUsernameAndLang()
         print(client_list)
         for client in self.clients:
-            try: 
+            try:
                 if not (client.username is None or client.language is None):
-                    message = json.dumps({"clientsOnline":client_list, "numOfClients":number_of_clients})
-                    client.sendMessage(message.encode('utf-8'))
+                    message = json.dumps(
+                        {
+                            "clientsOnline": client_list,
+                            "numOfClients": number_of_clients,
+                        }
+                    )
+                    client.sendMessage(message.encode("utf-8"))
             except:
-                pass
-        
+                print(traceback.format_exc())
+
     def register(self, client):
         if client not in self.clients:
             print(f"Client {client.peer} registriert.")
@@ -118,23 +139,14 @@ class ChatServerFactory(WebSocketServerFactory):
     def broadcast(self, message, sender):
         print(sender)
         for client in self.clients:
-            message.language = client.language
-            print(message)
-            print(type(message.language))
-            client.sendMessage(json.dumps(message.__dict__).encode('utf-8'))
-            
+            if message.language != client.language:
+                message.language = client.language
+                message = translate_text(message)
+                print(f"Message translated for {client.username}")
+            client.sendMessage(json.dumps(message.__dict__).encode("utf-8"))
+
 
 if __name__ == "__main__":
-    '''
-    chatServer = ChatServerProtocol()
-    
-    Message = b'{"username":"test","message":"alexa, mir gehts nicht gut","timestamp":"14:42:21","language":"de"}'
-    chatServer.onMessage(Message, False)
-    '''
-    
-    #connect_message = b'{"language":"de"}'
-    
-    #chatServer.onConnect(c)
     factory = ChatServerFactory("ws://localhost:9000")
     factory.protocol = ChatServerProtocol
     reactor.listenTCP(9000, factory)
