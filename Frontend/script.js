@@ -53,6 +53,8 @@ function establishConnection() {
         //console.log("Message from server ", event.data);
         // Parsen der empfangenen JSON-Nachricht
         const receivedMessage = JSON.parse(event.data);
+        console.log(receivedMessage);
+        
 
         if(receivedMessage.numOfClients) {
             const currentUsersList = document.getElementById("currentUsers");
@@ -66,8 +68,16 @@ function establishConnection() {
         }
         else {
             const chatTextArea = document.getElementById("chatTextArea");
-            // Formatierung der Nachricht: "nickname: nachricht (timestamp)"
-            const formatMessage = `(${receivedMessage.timestamp}) ${receivedMessage.username}: ${receivedMessage.message}`;
+            const atmosphere = receivedMessage.sentiment;
+            let smiley = "\u{1F610}";
+            if (atmosphere < -0.3) {
+                smiley = "\u{1F622}";
+            }
+            else if (atmosphere > 0.3) {
+                smiley = "\u{1F60A}";
+            }
+
+            const formatMessage = `(${receivedMessage.timestamp}) ${smiley}  ${receivedMessage.username}: ${receivedMessage.message} `;
 
             // Hinzufügen der formatierten Nachricht zum Chatfenster, mit Zeilenumbruch für jede neue Nachricht
             chatTextArea.value += (chatTextArea.value ? "\n" : "") + formatMessage;

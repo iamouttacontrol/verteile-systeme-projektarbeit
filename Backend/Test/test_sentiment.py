@@ -1,6 +1,6 @@
 import unittest
-from Backend.Main.Sentiment import sentiment_analysis
-from Backend.Main import MessageFromClient, MessageToClient
+from Main.Sentiment import sentiment_analysis
+from Main import MessageFromClient, MessageToClient
 
 
 class TestSentiment(unittest.TestCase):

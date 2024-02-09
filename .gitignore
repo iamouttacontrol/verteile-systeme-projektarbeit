@@ -7,4 +7,4 @@ verteile-systeme-projektarbeit.code-workspace
 credentials.json
 .vscode
 verteile-systeme-projektarbeit.code-workspace
-/Backend/Main/__pycache__
+**/__pycache__/
