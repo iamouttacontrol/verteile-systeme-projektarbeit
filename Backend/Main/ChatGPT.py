@@ -34,7 +34,7 @@ def listenToMessages(chatHistory):
         return create_chatbot(chatHistory)
     else:
         print("Bot soll nicht antworten")
-        return message
+        return None
 
 
 def create_chatbot(chatHistory):
@@ -52,8 +52,7 @@ def create_chatbot(chatHistory):
     # will make it more focused and deterministic.
     temperature = 0.5 * (sentiment + 1) * (max_temp - min_temp) + min_temp
 
-    print("Temperatur ist: "+str(temperature))
-    print("Ich bin ready...!")
+    print("temperature for bot is: " + str(temperature))
 
     for message in chatHistory:
         messages.append({"role": "user", "content": f"{message.message}"})
@@ -94,5 +93,4 @@ def checkSentiment(chatHistory):
         sentiment_value += message.sentiment
 
     sentiment_value = sentiment_value / len(chatHistory)
-    print("Backend: " + str(sentiment_value))
     return sentiment_value
