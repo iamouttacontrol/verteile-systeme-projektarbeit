@@ -83,8 +83,7 @@ class ChatServerProtocol(WebSocketServerProtocol):
 class ChatServerFactory(WebSocketServerFactory):
     def __init__(self, url):
         super().__init__(url)
-        self.clients = [] 
-        #self.loop = task.LoopingCall(self.sendCurrentUsers)   
+        self.clients = []    
         
     def getUsernameAndLang(self):
         client_list = []
@@ -108,15 +107,12 @@ class ChatServerFactory(WebSocketServerFactory):
         if client not in self.clients:
             print(f"Client {client.peer} registriert.")
             self.clients.append(client)
-        #if len(self.clients) > 0:
-        #    self.loop.start(5)
 
     def unregister(self, client):
         if client in self.clients:
             print(f"Client {client.peer} registriert.")
             self.clients.remove(client)
         if len(self.clients):
-        #    self.loop.stop()
             self.sendCurrentUsers()
 
     def broadcast(self, message, sender):
