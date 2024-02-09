@@ -1,25 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Projektarbeit Verteilte Systeme</title>
+    <title>Virtualmeet</title>
     <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Honk">
     <script src ="script.js"></script>
+    <link rel="icon" href="img/Virtualmeet.png" type="image/x-icon">
 </head>
 <body onload="establishConnection()">
 
-<h1>Projektarbeit Chat</h1>
+<h1>Virtualmeet</h1>
 
 <div class="grid-block">
-
     <div class="top-bar">
-
     </div>
 
     <div class="nickNameArea">
-        <label>Username:</label>
-        <label for="nicknameArea"></label><input id="nicknameArea"></input>
-        <button type="button" onclick="buttonNicknameSave()">Speichern</button>
+
+        <div class="languageArea">
+
+            <div class="languageLabelArea"><label class="languageLabel">Language:</label></div>
+
+            <div class="dropdown">
+                <button class="dropdownBtn">
+                    <img id="chosenLanguageFlag" src="img/Flag_of_Germany.png" alt="Flag_of_Germany" style="width:40px; height: auto">
+                </button>
+
+                <div class="dropdown-content">
+                    <a href="#" data-value="1"><img class="flaggenImage" src="img/Flag_of_Germany.png" alt="Flag_of_Germany"> Deutsch </a>
+                    <a href="#" data-value="2"><img class="flaggenImage" src="img/Flag_of_England.png" alt="Flag_of_England"> English </a>
+                    <a href="#" data-value="3"><img class="flaggenImage" src="img/Flag_of_France.png" alt="Flag_of_France"> Français </a>
+                    <a href="#" data-value="4"><img class="flaggenImage" src="img/Flag_of_Italy.png" alt="Flag_of_Italy"> Italia </a>
+                    <a href="#" data-value="5"><img class="flaggenImage" src="img/Flag_of_Spain.png" alt="Flag_of_Spain"> Español </a>
+                </div>
+
+                <input type="hidden" id="dropdownValue" name="dropdownValue">
+
+            </div>
+        </div>
+
+        <label class="usernameLabelArea">Username:</label>
+        <div class="nickNameInputArea"><input id="nicknameArea"> </div>
+        <button type="button" class="usersettingsButton" onclick="buttonNicknameSave()">Save</button>
     </div>
 
 
@@ -30,40 +52,24 @@
         </div>
     </div>
 
-
-<div class="chatfenster">
-    <label for="chatTextArea"></label>
-    <textarea readonly id="chatTextArea"></textarea>
-</div>
+    <div class="chatfenster">
+        <label for="chatTextArea"></label>
+        <textarea readonly id="chatTextArea"></textarea>
+    </div>
 
     <div class="rightOfChat">
+
+       <img id="testId" src="img/Virtualmeet.png" alt="Flag_of_France"  style="height: 200px; width: auto" >
 
     </div>
 
 <div class="chatinteraktion">
-    <!--
-        <label for="dropdownOptions"></label><select id="dropdownOptions" name="options" onchange="selectLanguageChange()">Sprache
-            <option value="de"> <img class="flaggenImage" src="img/Flag_of_Germany.png" alt="Flag_of_Germany"> Deutsch</option>
-            <option value="eng">English</option>
-            <option value="sp">Spanisch</option>
-    </select>
-    -->
-    <div class="dropdown">
-        <button class="dropdownBtn"><img id="dropDownFlag" src="img/Flag_of_Germany.png" alt="Flag_of_Germany"></button>
-
-        <div class="dropdown-content">
-            <a href="#" data-value="1"><img class="flaggenImage" src="img/Flag_of_Germany.png" alt="Flag_of_Germany"> Deutsch </a>
-            <a href="#" data-value="2"><img class="flaggenImage" src="img/Flag_of_England.png" alt="Flag_of_England"> Englisch </a>
-            <a href="#" data-value="3"><img class="flaggenImage" src="img/Flag_of_Spain.png" alt="Flag_of_Spain"> Spanisch </a>
-        </div>
-        <input type="hidden" id="dropdownValue" name="dropdownValue">
-    </div>
 
     <div id="chatInputArea">
         <label for="chatTextEingabe"></label><input id="chatTextEingabe">
     </div>
     <div class="sendButtonArea">
-        <button id="sendButton" type="button" class="sendButton" onclick="buttonSendAction()">Senden</button>
+        <button id="sendButton" type="button" onclick="buttonSendAction()">Send</button>
     </div>
 
 </div>

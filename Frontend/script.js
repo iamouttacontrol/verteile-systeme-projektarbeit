@@ -1,17 +1,14 @@
 let savedNickname;
 let chosenlanguage = "de";
-
 let socket;
 
 function buttonSendAction() {
     const eingabeFenster = document.getElementById("chatTextEingabe");
-
     let eingabeText = eingabeFenster.value;
 
     if(eingabeText === '' || savedNickname ==='') {
         alert("Bitte Nachricht eingeben!")
     }else {
-
         // Entfernen Sie jede direkte Anzeige im Chatfenster hier.
         eingabeFenster.value = ""; // Eingabefeld leeren
 
@@ -24,14 +21,13 @@ function buttonSendAction() {
         let timestamp = `${hour}:${minute}:${second}`;
 
         // JSON String bilden
-        const chatnachricht = {
+        const chatMessageToServer = {
             username: savedNickname,
             message: eingabeText,
             timestamp: timestamp,
             language: chosenlanguage
         };
-        let data = JSON.stringify(chatnachricht);
-
+        let data = JSON.stringify(chatMessageToServer);
 
         //document.getElementById("chatTextArea").innerHTML = data;
         socket.send(data);
@@ -53,8 +49,6 @@ function establishConnection() {
         //console.log("Message from server ", event.data);
         // Parsen der empfangenen JSON-Nachricht
         const receivedMessage = JSON.parse(event.data);
-        console.log(receivedMessage);
-        
 
         if(receivedMessage.numOfClients) {
             const currentUsersList = document.getElementById("currentUsers");
@@ -95,17 +89,35 @@ function buttonNicknameSave() {
       savedNickname = nicknameEingabe.value;
         nicknameEingabe.readOnly = true;
         nicknameEingabe.style.backgroundColor = "lightgrey";
+
+        let dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function (dropdown){
+            dropdown.classList.add('no-hover-dropdown');
+        })
+
     }
 }
 
 /**
- * Mit der Methode wird die Sprache festgelegt auf der man die Nachrichten übersetzt haben will.
+ * Mit der Methode wird die Sprache festgelegt, auf der man die Nachrichten übersetzt haben will.
  */
 function selectLanguage() {
     switch (document.getElementById("dropdownValue").value){
-        case "1": chosenlanguage ="de"; break;
-        case "2": chosenlanguage ="en"; break;
-        case "3": chosenlanguage ="es"; break
+        case "1": chosenlanguage ="de";
+                document.getElementById("chosenLanguageFlag").src = "img/Flag_of_Germany.png";
+        break;
+        case "2": chosenlanguage ="en";
+                document.getElementById("chosenLanguageFlag").src = "img/Flag_of_England.png";
+        break;
+        case "3": chosenlanguage ="fr";
+                document.getElementById("chosenLanguageFlag").src = "img/Flag_of_France.png";
+        break;
+        case "4": chosenlanguage = "it";
+                document.getElementById("chosenLanguageFlag").src = "img/Flag_of_Italy.png";
+        break;
+        case "5": chosenlanguage = "es";
+                document.getElementById("chosenLanguageFlag").src = "img/Flag_of_Spain.png";
+        break;
     }
 }
 
@@ -114,41 +126,34 @@ function scrollToBottom() {
     chatTextArea.scrollTop = chatTextArea.scrollHeight; // Scrollt zum unteren Rand
 }
 
-//Abschicken mit der Enter-Taste
+//Nachrichten können mit "Enter"-Taste verschickt werden
 document.addEventListener('keydown', function(event){
    if(event.key === "Enter"){
        document.getElementById("sendButton").click();
    }
 });
 
-
 //Testbereich
 document.addEventListener('DOMContentLoaded', function() {
   var dropdownLinks = document.querySelectorAll('.dropdown-content a');
-  var dropbtn = document.querySelector('.dropdownBtn');
+  //var dropbtn = document.querySelector('.dropdownBtn');
   var hiddenInput = document.getElementById('dropdownValue');
-
-  // Initialisiere das Dropdown mit einem Standardwert
-  setDropdownValue(dropdownLinks[0].getAttribute('data-value'), dropdownLinks[0].textContent); // Setzt Option 2 als Standard
 
   dropdownLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
-      e.preventDefault();
       var value = this.getAttribute('data-value');
-      var text = this.textContent;
-      setDropdownValue(value, text);
+      //var text = this.textContent;
+     // setDropdownValue(value, text);
+      setDropdownValue(value);
       selectLanguage();
     });
   });
 
-  function setDropdownValue(value, text) {
+  function setDropdownValue(value) {
     hiddenInput.value = value;
-    dropbtn.textContent = text;
-
-    //dropbtn.focus(); // Optional: Setze den Fokus auf den Button
+    //dropbtn.textContent = text;
   }
 });
-
 
 
 
