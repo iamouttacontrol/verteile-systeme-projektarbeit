@@ -81,6 +81,12 @@ function buttonNicknameSave() {
       savedNickname = nicknameEingabe.value;
         nicknameEingabe.readOnly = true;
         nicknameEingabe.style.backgroundColor = "lightgrey";
+
+        let dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function (dropdown){
+            dropdown.classList.add('no-hover-dropdown');
+        })
+
     }
 }
 
@@ -89,11 +95,21 @@ function buttonNicknameSave() {
  */
 function selectLanguage() {
     switch (document.getElementById("dropdownValue").value){
-        case "1": chosenlanguage ="de"; break;
-        case "2": chosenlanguage ="en"; break;
-        case "3": chosenlanguage ="fr"; break
-        case "4": chosenlanguage = "it"; break;
-        case "5": chosenlanguage = "es"; break;
+        case "1": chosenlanguage ="de";
+                document.getElementById("chosenLanguageFlag").src = "img/Flag_of_Germany.png";
+        break;
+        case "2": chosenlanguage ="en";
+                document.getElementById("chosenLanguageFlag").src = "img/Flag_of_England.png";
+        break;
+        case "3": chosenlanguage ="fr";
+                document.getElementById("chosenLanguageFlag").src = "img/Flag_of_France.png";
+        break;
+        case "4": chosenlanguage = "it";
+                document.getElementById("chosenLanguageFlag").src = "img/Flag_of_Italy.png";
+        break;
+        case "5": chosenlanguage = "es";
+                document.getElementById("chosenLanguageFlag").src = "img/Flag_of_Spain.png";
+        break;
     }
 }
 
@@ -102,37 +118,34 @@ function scrollToBottom() {
     chatTextArea.scrollTop = chatTextArea.scrollHeight; // Scrollt zum unteren Rand
 }
 
-//Abschicken mit der Enter-Taste
+//Nachrichten können mit "Enter"-Taste verschickt werden
 document.addEventListener('keydown', function(event){
    if(event.key === "Enter"){
        document.getElementById("sendButton").click();
    }
 });
 
-
 //Testbereich
 document.addEventListener('DOMContentLoaded', function() {
   var dropdownLinks = document.querySelectorAll('.dropdown-content a');
-  var dropbtn = document.querySelector('.dropdownBtn');
+  //var dropbtn = document.querySelector('.dropdownBtn');
   var hiddenInput = document.getElementById('dropdownValue');
 
   dropdownLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
-      e.preventDefault();
       var value = this.getAttribute('data-value');
-      var text = this.textContent;
-      setDropdownValue(value, text);
+      //var text = this.textContent;
+     // setDropdownValue(value, text);
+      setDropdownValue(value);
       selectLanguage();
     });
   });
 
-  function setDropdownValue(value, text) {
+  function setDropdownValue(value) {
     hiddenInput.value = value;
-    dropbtn.textContent = text;
-    document.getElementById("chosenLanguageFlag").src = "img/Flag_of_Germany.png";
+    //dropbtn.textContent = text;
   }
 });
-
 
 
 

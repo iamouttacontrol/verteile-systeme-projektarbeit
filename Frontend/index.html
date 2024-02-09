@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:data-image="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Virtualmeet</title>
@@ -23,35 +22,27 @@
             <div class="languageLabelArea"><label class="languageLabel">Language:</label></div>
 
             <div class="dropdown">
-            <button class="dropdownBtn" onclick="toggleDropdown()">
-                <p>Language</p><img id="chosenLanguageFlag" src="img/Flag_of_Germany.png" alt="Flag_of_Germany" style="width:40px; height: auto">
-            </button>
+                <button class="dropdownBtn">
+                    <img id="chosenLanguageFlag" src="img/Flag_of_Germany.png" alt="Flag_of_Germany" style="width:40px; height: auto">
+                </button>
 
-            <div class="dropdown-content">
-                <a href="#" data-value="1"><img class="flaggenImage" src="img/Flag_of_Germany.png" alt="Flag_of_Germany"> Deutsch </a>
-                <a href="#" data-value="2"><img class="flaggenImage" src="img/Flag_of_England.png" alt="Flag_of_England"> English </a>
-                <a href="#" data-value="3"><img class="flaggenImage" src="img/Flag_of_France.png" alt="Flag_of_France"> Français </a>
-                <a href="#" data-value="4"><img class="flaggenImage" src="img/Flag_of_Italy.png" alt="Flag_of_Italy"> Italia </a>
-                <a href="#" data-value="5"><img class="flaggenImage" src="img/Flag_of_Spain.png" alt="Flag_of_Spain"> Español </a>
-                 <a onclick="selectOption('Test 1', 'img/Flag_of_Germany.png')">Test 1 <img src="img/Flag_of_Germany.png" style="width:40px; height: auto"></a>
-                <a onclick="selectOption('Test 2', 'img/Flag_of_England.png')">Test 2 <img src="img/Flag_of_England.png"style="width:40px; height: auto"></a>
-                 <a onclick="selectOption('Test 3', 'img/Flag_of_France.png')">Test 3 <img src="img/Flag_of_France.png"style="width:40px; height: auto"></a>
-            </div>
+                <div class="dropdown-content">
+                    <a href="#" data-value="1"><img class="flaggenImage" src="img/Flag_of_Germany.png" alt="Flag_of_Germany"> Deutsch </a>
+                    <a href="#" data-value="2"><img class="flaggenImage" src="img/Flag_of_England.png" alt="Flag_of_England"> English </a>
+                    <a href="#" data-value="3"><img class="flaggenImage" src="img/Flag_of_France.png" alt="Flag_of_France"> Français </a>
+                    <a href="#" data-value="4"><img class="flaggenImage" src="img/Flag_of_Italy.png" alt="Flag_of_Italy"> Italia </a>
+                    <a href="#" data-value="5"><img class="flaggenImage" src="img/Flag_of_Spain.png" alt="Flag_of_Spain"> Español </a>
+                </div>
 
-            <input type="hidden" id="dropdownValue" name="dropdownValue">
+                <input type="hidden" id="dropdownValue" name="dropdownValue">
 
             </div>
         </div>
-
 
         <label class="usernameLabelArea">Username:</label>
         <div class="nickNameInputArea"><input id="nicknameArea"> </div>
         <button type="button" class="usersettingsButton" onclick="buttonNicknameSave()">Save</button>
     </div>
-
-
-
-
 
 
     <div class="leftOfChat">
@@ -61,14 +52,14 @@
         </div>
     </div>
 
-<div class="chatfenster">
-    <label for="chatTextArea"></label>
-    <textarea readonly id="chatTextArea"></textarea>
-</div>
+    <div class="chatfenster">
+        <label for="chatTextArea"></label>
+        <textarea readonly id="chatTextArea"></textarea>
+    </div>
 
     <div class="rightOfChat">
 
-       <img src="img/Virtualmeet.png" alt="Flag_of_France"  style="height: 200px; width: auto" >
+       <img id="testId" src="img/Virtualmeet.png" alt="Flag_of_France"  style="height: 200px; width: auto" >
 
     </div>
 

@@ -1,6 +1,6 @@
 body{
     background-color: #171717;
-    font-family: "Honk";
+    font-family: "Honk", serif;
     font-size: 26px;
 }
 
@@ -61,7 +61,7 @@ h1{
 
 .dropdownBtn{
     color:black;
-    background-color: grey;
+    background-color: lightgrey;
 
     border-style: solid;
     border-width: 2px;
@@ -91,13 +91,18 @@ h1{
     background-color: #f1f1f1;
 }
 
+.dropdown:hover .dropdownBtn{
+    background-color: darkgrey;
+}
+
 .dropdown:hover .dropdown-content{
     display:block;
 }
 
-.dropdown:hover .dropdownBtn{
-    background-color: aqua;
+.no-hover-dropdown .dropdown-content {
+    display: none !important; /* Verwenden Sie `!important`, um sicherzustellen, dass dieser Stil Vorrang hat. */
 }
+
 
 .nickNameArea{
     grid-row: 1;
