@@ -6,7 +6,7 @@ from Message import MessageFromClient, MessageToClient
 
 
 def translate_text(message: MessageFromClient | MessageToClient):
-    credentials_path = "C:/Users/Matthias Wohlmacher/PycharmProjects/verteile-systeme-projektarbeit/Backend/Main/credentials.json"
+    credentials_path = "credentials.json"
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
     translate_client = translate.Client()
     message_str = message.message

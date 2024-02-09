@@ -3,3 +3,8 @@
 /Backend/Main/.env
 venv
 verteile-systeme-projektarbeit.code-workspace
+.env
+credentials.json
+.vscode
+verteile-systeme-projektarbeit.code-workspace
+/Backend/Main/__pycache__
