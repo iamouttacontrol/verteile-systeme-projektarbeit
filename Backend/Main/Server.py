@@ -34,15 +34,15 @@ class ChatServerProtocol(WebSocketServerProtocol):
                 # message = MessageFromClient.model_validate(message["username"], message["message"], message["language"], message["timestamp"])
                 message = MessageFromClient.model_validate(message)
                 
-                if (self.language is None):
+                if (self.language is None or self.username is None):
                     self.language = message.language
-                    print("set user language to", self.language)
-                    
-                if (self.username is None):
                     self.username = message.username
+                    print("set user language to", self.language)
                     print("linked user with username", self.username)
+                    self.factory.sendCurrentUsers()
                     
-        
+                    
+                
 
                 if message.language != "en":
                     message.language = "en"
@@ -84,7 +84,7 @@ class ChatServerFactory(WebSocketServerFactory):
     def __init__(self, url):
         super().__init__(url)
         self.clients = [] 
-        self.loop = task.LoopingCall(self.sendCurrentUsers)   
+        #self.loop = task.LoopingCall(self.sendCurrentUsers)   
         
     def getUsernameAndLang(self):
         client_list = []
@@ -108,15 +108,16 @@ class ChatServerFactory(WebSocketServerFactory):
         if client not in self.clients:
             print(f"Client {client.peer} registriert.")
             self.clients.append(client)
-        if len(self.clients) > 0:
-            self.loop.start(5)
+        #if len(self.clients) > 0:
+        #    self.loop.start(5)
 
     def unregister(self, client):
         if client in self.clients:
             print(f"Client {client.peer} registriert.")
             self.clients.remove(client)
-        if len(self.clients) < 1:
-            self.loop.stop()
+        if len(self.clients):
+        #    self.loop.stop()
+            self.sendCurrentUsers()
 
     def broadcast(self, message, sender):
         print(sender)
